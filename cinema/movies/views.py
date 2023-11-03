@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
-from movies.models import Movie, MovieShots
+from movies.models import Movie
+from movies.forms import ReviewForm
 
 
 # Create your views here.
@@ -25,6 +26,18 @@ def movie_detail(request, slug):
 
 # Контроллер для отправки отзывов.
 def add_review(request, pk):
-    print(request.POST)
-    return redirect('/')
+    form = ReviewForm(request.POST)
+    movie = Movie.objects.get(id=pk)
+    if form.is_valid():
+        # Вызывая метод save и передавая аргумент commit=False мы указываем, что хотим приостановить сохранение нашей
+        # формы.
+        form = form.save(commit=False)
+        # В данном поле необходимо указать фильм, к которому мы хотим привязаться.
+        # Столбец movie в базе данных обозначен как movie_id, таким образом можно передавать значение для привязки к
+        # какому-либо фильму. Если мы будем использовать просто поле movie, то мы можем передавать объект самого фильма.
+        #form.movie_id = pk
+        # Второй вариант.
+        form.movie = movie
+        form.save()
+    return redirect(movie.get_absolute_url())
 
