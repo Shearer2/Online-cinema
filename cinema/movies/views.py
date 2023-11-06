@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, HttpResponseRedirect
 from movies.models import Movie
 from movies.forms import ReviewForm
 
@@ -32,6 +32,11 @@ def add_review(request, pk):
         # Вызывая метод save и передавая аргумент commit=False мы указываем, что хотим приостановить сохранение нашей
         # формы.
         form = form.save(commit=False)
+        # Ищем в POST запросе ключ parent, который является именем определённого поля, если оно будет, то выполняется
+        # данное условие, иначе выполняется None.
+        if request.POST.get('parent', None):
+            # Достаём значение ключа parent, чтобы прикрепить к отзыву родителя.
+            form.parent_id = int(request.POST.get('parent'))
         # В данном поле необходимо указать фильм, к которому мы хотим привязаться.
         # Столбец movie в базе данных обозначен как movie_id, таким образом можно передавать значение для привязки к
         # какому-либо фильму. Если мы будем использовать просто поле movie, то мы можем передавать объект самого фильма.
@@ -39,5 +44,5 @@ def add_review(request, pk):
         # Второй вариант.
         form.movie = movie
         form.save()
-    return redirect(movie.get_absolute_url())
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
