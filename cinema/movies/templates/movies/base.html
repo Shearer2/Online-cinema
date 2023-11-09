@@ -50,9 +50,13 @@
                                                         aria-hidden="true"></span></a>
                             <input type="checkbox" id="drop-2">
                             <ul>
-                                <li><a href="moviesingle.html">Фильмы</a></li>
-                                <li><a href="moviesingle.html">Сериалы</a></li>
-                                <li><a href="moviesingle.html">Мультфильмы</a></li>
+                                {% for category in category_list %}
+                                <li>
+                                    <a href="moviesingle.html">
+                                        {{ category }}
+                                    </a>
+                                </li>
+                                {% endfor %}
                             </ul>
                         </li>
                         <li><a href="contact.html"

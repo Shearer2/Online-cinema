@@ -47,9 +47,40 @@ class MovieAdmin(admin.ModelAdmin):
     # list_editable.
     list_editable = ('draft',)
     readonly_fields = ('get_poster',)
+    # Добавляем actions в админ-панели.
+    actions = ('publish', 'unpublish')
 
     def get_poster(self, obj):
         return mark_safe(f'<img src={obj.poster.url} width="60" height="50">')
+
+    # Добавление actions, чтобы можно было выбранные записи убрать из черновика.
+    def publish(self, request, queryset):
+        """Опубликовать."""
+        # Здесь хранятся выбранные записи.
+        row_update = queryset.update(draft=False)
+        # Вывод уведомления вверху экрана об изменении записи в зависимости от выбранного количества.
+        if row_update == 1:
+            message_bit = '1 запись была обновлена'
+        else:
+            message_bit = f'{row_update} записи было обновлено'
+        self.message_user(request, f'{message_bit}')
+
+    # Добавление actions, чтобы можно было выбранные записи добавить в черновик.
+    def unpublish(self, request, queryset):
+        """Снять с публикации."""
+        # Здесь хранятся выбранные записи.
+        row_update = queryset.update(draft=True)
+        if row_update == 1:
+            message_bit = '1 запись была обновлена'
+        else:
+            message_bit = f'{row_update} записи было обновлено'
+        self.message_user(request, f'{message_bit}')
+
+    publish.short_description = 'Опубликовать'
+    publish.allowed_permissions = ('change',)
+
+    unpublish.short_description = 'Снять с публикации'
+    unpublish.allowed_permissions = ('change',)
 
     get_poster.short_description = "Постер"
 

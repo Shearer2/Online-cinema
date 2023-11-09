@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponseRedirect
-from movies.models import Movie
+from movies.models import Movie, Category
 from movies.forms import ReviewForm
 
 
@@ -8,8 +8,14 @@ from movies.forms import ReviewForm
 def movies_view(request):
     # Делаем вывод только тех фильмов, которые не являются черновиками.
     movies = Movie.objects.filter(draft=False)
+    # Делаем вывод всех категорий.
+    category = Category.objects.all()
+    # Выводим определённое количество фильмов, которые не являются черновиками.
+    last_movies = Movie.objects.filter(draft=False).order_by('id')[:5]
     context = {
-        'movie_list': movies
+        'movie_list': movies,
+        'category_list': category,
+        'last_movies': last_movies
     }
     return render(request, 'movies/movies_list.html', context)
 
@@ -18,8 +24,12 @@ def movies_view(request):
 def movie_detail(request, slug):
     # Получаем номер фильма и по нему из базы данных берём информацию.
     movie = Movie.objects.get(url=slug)
+    category = Category.objects.all()
+    last_movies = Movie.objects.filter(draft=False).order_by('id')[:5]
     context = {
-        'movie': movie
+        'movie': movie,
+        'category_list': category,
+        'last_movies': last_movies
     }
     return render(request, 'movies/movie_detail.html', context)
 
