@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponseRedirect
-from movies.models import Movie, Category
+from movies.models import Movie, Category, Actor
 from movies.forms import ReviewForm
 
 
@@ -55,4 +55,12 @@ def add_review(request, pk):
         form.movie = movie
         form.save()
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+def actor_views(request, slug):
+    slug_field = Actor.objects.get(name=slug)
+    context = {
+        'actor': slug_field
+    }
+    return render(request, 'movies/actor.html', context)
 
