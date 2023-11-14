@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponseRedirect
-from movies.models import Movie, Category, Actor
+from movies.models import Movie, Category, Actor, Genre
 from movies.forms import ReviewForm
 
 
@@ -12,10 +12,13 @@ def movies_view(request):
     category = Category.objects.all()
     # Выводим определённое количество фильмов, которые не являются черновиками.
     last_movies = Movie.objects.filter(draft=False).order_by('id')[:5]
+    genres = Genre.objects.all()
     context = {
         'movie_list': movies,
         'category_list': category,
-        'last_movies': last_movies
+        'last_movies': last_movies,
+        'genres': genres,
+        'movies': movies.values('year')
     }
     return render(request, 'movies/movies_list.html', context)
 
@@ -26,10 +29,14 @@ def movie_detail(request, slug):
     movie = Movie.objects.get(url=slug)
     category = Category.objects.all()
     last_movies = Movie.objects.filter(draft=False).order_by('id')[:5]
+    genres = Genre.objects.all()
+    movies = Movie.objects.filter(draft=False)
     context = {
         'movie': movie,
         'category_list': category,
-        'last_movies': last_movies
+        'last_movies': last_movies,
+        'genres': genres,
+        'movies': movies.values('year')
     }
     return render(request, 'movies/movie_detail.html', context)
 
@@ -57,10 +64,24 @@ def add_review(request, pk):
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
+# Контроллер для вывода информации об актёрах и режиссёрах.
 def actor_views(request, slug):
     slug_field = Actor.objects.get(name=slug)
+    genres = Genre.objects.all()
+    movies = Movie.objects.filter(draft=False)
     context = {
-        'actor': slug_field
+        'actor': slug_field,
+        'genres': genres,
+        'movies': movies.values('year')
     }
     return render(request, 'movies/actor.html', context)
 
+
+# Контроллер для фильтрации фильмов.
+def filter_movie(request):
+    # Выводим года, которые входят в список всех годов.
+    queryset = Movie.objects.filter(year__in=request.GET.getlist('year'))
+    context = {
+        'queryset': queryset
+    }
+    return render(request, 'movies/movies_list.html', context)

@@ -69,8 +69,158 @@
         </header>
         {% block banner-info %} {% endblock %}
     </div>
-    {% block main-content %} {% endblock %}
-    {% block banner %} {% endblock %}
+    <ol class="breadcrumb editContent">
+        <li class="breadcrumb-item">
+            <a href="index.html" class="editContent">
+                Home
+            </a>
+        </li>
+        <li class="breadcrumb-item active editContent">
+            Single
+        </li>
+    </ol>
+
+    <section class="ab-info-main py-md-5 py-4 editContent" style={% block banner-style %} {% endblock %}>
+        <div class={% block container %} {% endblock %}>
+            <!-- top Products -->
+            <div class="row">
+                <!-- product left -->
+                <div class={% block side-bar %} {% endblock %}>
+
+                    <div class="search-bar w3layouts-newsletter">
+                        <h3 class="sear-head editContent" style="outline: none; cursor: inherit;">
+                            Поиск фильма</h3>
+                        <form action="#" method="post" class="d-flex editContent">
+                            <input type="search" placeholder="Введите название..." name="search"
+                                   class="form-control" required="">
+                            <button class="btn1 btn"><span
+                                    class="fa fa-search" aria-hidden="true"></span></button>
+                        </form>
+                    </div>
+                    <!--preference -->
+                    <div class="left-side my-4">
+                        <h3 class="sear-head editContent">
+                            Жанры
+                        </h3>
+                        <ul class="w3layouts-box-list">
+                            {% for genre in genres %}
+                            <li class="editContent">
+                                <input type="checkbox" class="checked">
+                                <span class="span editContent">{{ genre.name }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <!-- // preference -->
+                    <!-- discounts -->
+                    <!--Передаём имя url.-->
+                    <form action="{% url 'filter' %}" method="get">
+                        <div class="left-side">
+                            <h3 class="sear-head editContent">
+                                Год
+                            </h3>
+                            <ul class="w3layouts-box-list">
+                                {% for movie in movies %}
+                                <li class="editContent">
+                                    <input type="checkbox" class="checked" name="year" value="{{ movie.year }}">
+                                    <span class="span editContent">{{ movie.year }}</span>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <!--Добавляем кнопку, чтобы была возможность отправить нашу форму.-->
+                        <button type="submit">Найти</button>
+                    </form>
+                    <!-- //discounts -->
+                    <!-- reviews -->
+                    <div class="customer-rev left-side my-4">
+                        <h3 class="sear-head editContent">
+                            Рейтинг
+                        </h3>
+                        <ul class="w3layouts-box-list">
+                            <li>
+                                <a href="#">
+                                    <span class="fa fa-star" aria-hidden="true"></span>
+                                    <span class="fa fa-star" aria-hidden="true"></span>
+                                    <span class="fa fa-star" aria-hidden="true"></span>
+                                    <span class="fa fa-star" aria-hidden="true"></span>
+                                    <span class="fa fa-star" aria-hidden="true"></span>
+                                    <span class="editContent">5.0</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span class="fa fa-star" aria-hidden="true"></span>
+                                    <span class="fa fa-star" aria-hidden="true"></span>
+                                    <span class="fa fa-star" aria-hidden="true"></span>
+                                    <span class="fa fa-star" aria-hidden="true"></span>
+                                    <span class="fa fa-star-o" aria-hidden="true"></span>
+                                    <span class="editContent">4.0</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span class="fa fa-star" aria-hidden="true"></span>
+                                    <span class="fa fa-star" aria-hidden="true"></span>
+                                    <span class="fa fa-star" aria-hidden="true"></span>
+                                    <span class="fa fa-star-half-o" aria-hidden="true"></span>
+                                    <span class="fa fa-star-o" aria-hidden="true"></span>
+                                    <span class="editContent">3.5</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span class="fa fa-star" aria-hidden="true"></span>
+                                    <span class="fa fa-star" aria-hidden="true"></span>
+                                    <span class="fa fa-star" aria-hidden="true"></span>
+                                    <span class="fa fa-star-o" aria-hidden="true"></span>
+                                    <span class="fa fa-star-o" aria-hidden="true"></span>
+                                    <span class="editContent">3.0</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span class="fa fa-star" aria-hidden="true"></span>
+                                    <span class="fa fa-star" aria-hidden="true"></span>
+                                    <span class="fa fa-star-half-o" aria-hidden="true"></span>
+                                    <span class="fa fa-star-o" aria-hidden="true"></span>
+                                    <span class="fa fa-star-o" aria-hidden="true"></span>
+                                    <span class="editContent">2.5</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- //reviews -->
+                    <!-- deals -->
+                    <div class="deal-leftmk left-side">
+                        <h3 class="sear-head editContent">
+                            Последние добавленные
+                        </h3>
+                        {% for movie in last_movies %}
+                        <div class="special-sec1 row mt-3 editContent">
+                            <div class="img-deals col-md-4">
+                                <img src="{{ movie.poster.url }}" class="img-fluid" alt="">
+                            </div>
+                            <div class="img-deal1 col-md-4">
+                                <h3 class="editContent">
+                                    {{ movie.title }}
+                                </h3>
+                                <a href="{{ movie.url }}" class="editContent"></a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <!-- //deals -->
+                    <!-- //deals -->
+
+                </div>
+                <!-- //product left -->
+                <!-- product right -->
+                {% block product-right %} {% endblock %}
+            </div>
+        </div>
+    </section>
+
     <!-- footer -->
     <footer class="editContent">
         <div class="container">
