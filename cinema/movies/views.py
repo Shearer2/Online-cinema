@@ -1,6 +1,8 @@
 from django.shortcuts import render, HttpResponseRedirect
 from movies.models import Movie, Category, Actor, Genre
 from movies.forms import ReviewForm
+# Импортируем модуль для фильтрации по жанрам и годам.
+from django.db.models import Q
 
 
 # Create your views here.
@@ -79,9 +81,33 @@ def actor_views(request, slug):
 
 # Контроллер для фильтрации фильмов.
 def filter_movie(request):
-    # Выводим года, которые входят в список всех годов.
-    queryset = Movie.objects.filter(year__in=request.GET.getlist('year'))
+    if request.method == 'POST':
+        # Делаем вывод только тех фильмов, которые не являются черновиками.
+        movies = Movie.objects.filter(draft=False)
+    else:
+        # Выводим года и жанры, которые входят в список всех годов и жанров.
+        # Делаем вывод только тех фильмов, которые не являются черновиками.
+        # Делаем так, чтобы фильтрация работала не только тогда, когда выбирают и жанр и год, но и когда выбирают
+        # что-то одно.
+        # Если использовать данный способ, то при выборе жанра и года выведутся все фильмы данного жанра, вне
+        # зависимости от года. Если нужно выводить что-то именно, то нужно указывать через запятую.
+        #movies = Movie.objects.filter(draft=False).filter(
+        #    Q(year__in=request.GET.getlist('year')) |
+        #    Q(genres__in=request.GET.getlist('genres'))
+        #)
+        movies = Movie.objects.filter(draft=False). filter(
+            year__in=request.GET.getlist('year'), genres__in=request.GET.getlist('genres')
+        )
+    # Делаем вывод всех категорий.
+    category = Category.objects.all()
+    # Выводим определённое количество фильмов, которые не являются черновиками.
+    last_movies = Movie.objects.filter(draft=False).order_by('id')[:5]
+    genres = Genre.objects.all()
     context = {
-        'queryset': queryset
+        'movie_list': movies,
+        'category_list': category,
+        'last_movies': last_movies,
+        'genres': genres,
+        'movies': Movie.objects.filter(draft=False).values('year')
     }
     return render(request, 'movies/movies_list.html', context)

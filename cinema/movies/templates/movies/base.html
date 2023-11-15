@@ -93,28 +93,31 @@
                         <form action="#" method="post" class="d-flex editContent">
                             <input type="search" placeholder="Введите название..." name="search"
                                    class="form-control" required="">
-                            <button class="btn1 btn"><span
-                                    class="fa fa-search" aria-hidden="true"></span></button>
+                            <button class="btn1 btn">
+                                <span class="fa fa-search" aria-hidden="true"></span>
+                            </button>
                         </form>
                     </div>
                     <!--preference -->
-                    <div class="left-side my-4">
-                        <h3 class="sear-head editContent">
-                            Жанры
-                        </h3>
-                        <ul class="w3layouts-box-list">
-                            {% for genre in genres %}
-                            <li class="editContent">
-                                <input type="checkbox" class="checked">
-                                <span class="span editContent">{{ genre.name }}</span>
-                            </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                    <!-- // preference -->
-                    <!-- discounts -->
                     <!--Передаём имя url.-->
                     <form action="{% url 'filter' %}" method="get">
+                        <div class="left-side my-4">
+                            <h3 class="sear-head editContent">
+                                Жанры
+                            </h3>
+                            <ul class="w3layouts-box-list">
+                                {% for genre in genres %}
+                                <li class="editContent">
+                                    <!--Добавляем name, чтобы можно было забирать все выбранные жанры в контроллере.-->
+                                    <input type="checkbox" class="checked" name="genres" value="{{ genre.id }}">
+                                    <span class="span editContent">{{ genre.name }}</span>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <button type="submit">Найти</button>
+                        <!-- // preference -->
+                        <!-- discounts -->
                         <div class="left-side">
                             <h3 class="sear-head editContent">
                                 Год
