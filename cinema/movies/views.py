@@ -1,6 +1,6 @@
-from django.shortcuts import render, HttpResponseRedirect
-from movies.models import Movie, Category, Actor, Genre
-from movies.forms import ReviewForm
+from django.shortcuts import render, HttpResponse, HttpResponseRedirect
+from movies.models import Movie, Category, Actor, Genre, Rating
+from movies.forms import ReviewForm, RatingForm
 # Импортируем модуль для фильтрации по жанрам и годам.
 from django.db.models import Q
 
@@ -38,7 +38,8 @@ def movie_detail(request, slug):
         'category_list': category,
         'last_movies': last_movies,
         'genres': genres,
-        'movies': movies.values('year')
+        'movies': movies.values('year'),
+        'star_form': RatingForm()
     }
     return render(request, 'movies/movie_detail.html', context)
 
@@ -91,13 +92,13 @@ def filter_movie(request):
         # что-то одно.
         # Если использовать данный способ, то при выборе жанра и года выведутся все фильмы данного жанра, вне
         # зависимости от года. Если нужно выводить что-то именно, то нужно указывать через запятую.
-        #movies = Movie.objects.filter(draft=False).filter(
-        #    Q(year__in=request.GET.getlist('year')) |
-        #    Q(genres__in=request.GET.getlist('genres'))
-        #)
-        movies = Movie.objects.filter(draft=False). filter(
-            year__in=request.GET.getlist('year'), genres__in=request.GET.getlist('genres')
+        movies = Movie.objects.filter(draft=False).filter(
+            Q(year__in=request.GET.getlist('year')) |
+            Q(genres__in=request.GET.getlist('genres'))
         )
+        #movies = Movie.objects.filter(draft=False). filter(
+        #    year__in=request.GET.getlist('year'), genres__in=request.GET.getlist('genres')
+        #)
     # Делаем вывод всех категорий.
     category = Category.objects.all()
     # Выводим определённое количество фильмов, которые не являются черновиками.
@@ -111,3 +112,26 @@ def filter_movie(request):
         'movies': Movie.objects.filter(draft=False).values('year')
     }
     return render(request, 'movies/movies_list.html', context)
+
+
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
+
+
+# Добавляем возможность устанавливать рейтинг фильма.
+def add_rating(request):
+    form = RatingForm(request.POST)
+    if form.is_valid():
+        Rating.objects.update_or_create(
+            ip=get_client_ip(request),
+            movie_id=int(request.POST.get('movie')),
+            defaults={'star_id': int(request.POST.get('star'))}
+        )
+        return HttpResponse(status=201)
+    else:
+        return HttpResponse(status=400)
