@@ -682,8 +682,11 @@ span.product-new-top {
     width: 30px;
     height: 30px;
     background: url('../images/star-on-big.png');
+    background_size: 30px 30px;
+    transition: opacity 0.2s linear;
 }
 
+.rating > label:hover:before,  .rating > label:hover ~ label:before,  .rating:not(:hover) > :checked ~ label:before { opacity: 1; }
 /*-- //New-Arrivals --*/
 
 section#brands {

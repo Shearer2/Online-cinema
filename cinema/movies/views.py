@@ -1,6 +1,8 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from movies.models import Movie, Category, Actor, Genre, Rating
 from movies.forms import ReviewForm, RatingForm
+
+from django.views.generic.base import View
 # Импортируем модуль для фильтрации по жанрам и годам.
 from django.db.models import Q
 
@@ -114,6 +116,7 @@ def filter_movie(request):
     return render(request, 'movies/movies_list.html', context)
 
 
+# Контроллер для получения ip-адреса пользователя, который отправил запрос.
 def get_client_ip(request):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     if x_forwarded_for:
@@ -125,8 +128,13 @@ def get_client_ip(request):
 
 # Добавляем возможность устанавливать рейтинг фильма.
 def add_rating(request):
+    # Генерируем форму передавая ей post запрос.
     form = RatingForm(request.POST)
+    # Так как один и тот же пользователь не может устанавливать разные рейтинги к одному фильму, то есть если уже был
+    # добавлен его рейтинг, то нужно его перезаписать, делаем это после проверки валидности формы.
     if form.is_valid():
+        # Используем update_or_create чтобы можно было либо создавать запись, либо обновлять её если она уже была
+        # создана.
         Rating.objects.update_or_create(
             ip=get_client_ip(request),
             movie_id=int(request.POST.get('movie')),
