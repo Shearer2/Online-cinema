@@ -1,10 +1,9 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from movies.models import Movie, Category, Actor, Genre, Rating
 from movies.forms import ReviewForm, RatingForm
-
-from django.views.generic.base import View
 # Импортируем модуль для фильтрации по жанрам и годам.
 from django.db.models import Q
+from django.core.paginator import Paginator
 
 
 # Create your views here.
@@ -140,6 +139,33 @@ def add_rating(request):
             movie_id=int(request.POST.get('movie')),
             defaults={'star_id': int(request.POST.get('star'))}
         )
+        form.save()
         return HttpResponse(status=201)
     else:
         return HttpResponse(status=400)
+
+
+'''
+def add_rating(request):
+    if request.method == 'POST':
+        form = RatingForm(data=request.POST)
+        if form.is_valid():
+            rating_star = request.POST['star']
+            form[rating_star].save()
+    else:
+        form = RatingForm()
+    context = {'form': form}
+    return render(request, 'movies/movie_detail.html', context)
+'''
+
+
+def movie_paginator(request, category_id=None, page_number=1):
+    movies = Movie.objects.filter(category_id=category_id) if category_id else Movie.objects.all()
+    per_page = 1
+    paginator = Paginator(movies, per_page)
+    movies_paginator = paginator.page(page_number)
+    context = {
+        'movies': movies_paginator
+    }
+    return render(request, 'movies/movies_list.html', context)
+
