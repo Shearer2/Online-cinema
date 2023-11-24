@@ -8,20 +8,24 @@ from django.core.paginator import Paginator
 
 # Create your views here.
 # Контроллер для показа главной страницы.
-def movies_view(request):
+def movies_view(request, page_number=1):
     # Делаем вывод только тех фильмов, которые не являются черновиками.
-    movies = Movie.objects.filter(draft=False)
+    movies = Movie.objects.filter(draft=False).order_by('id')
     # Делаем вывод всех категорий.
     category = Category.objects.all()
     # Выводим определённое количество фильмов, которые не являются черновиками.
     last_movies = Movie.objects.filter(draft=False).order_by('id')[:5]
     genres = Genre.objects.all()
+    per_page = 1
+    paginator = Paginator(movies, per_page)
+    movies_paginator = paginator.page(page_number)
     context = {
-        'movie_list': movies,
+        #'movie_list': movies,
         'category_list': category,
         'last_movies': last_movies,
         'genres': genres,
-        'movies': movies.values('year')
+        'movies': movies.values('year'),
+        'movie_pag': movies_paginator
     }
     return render(request, 'movies/movies_list.html', context)
 
@@ -158,9 +162,9 @@ def add_rating(request):
     return render(request, 'movies/movie_detail.html', context)
 '''
 
-
-def movie_paginator(request, category_id=None, page_number=1):
-    movies = Movie.objects.filter(category_id=category_id) if category_id else Movie.objects.all()
+'''
+def movie_paginator(request, page_number=1):
+    movies = Movie.objects.all()
     per_page = 1
     paginator = Paginator(movies, per_page)
     movies_paginator = paginator.page(page_number)
@@ -169,3 +173,4 @@ def movie_paginator(request, category_id=None, page_number=1):
     }
     return render(request, 'movies/movies_list.html', context)
 
+'''
