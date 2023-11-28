@@ -2,13 +2,13 @@ from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from movies.models import Movie, Category, Actor, Genre, Rating
 from movies.forms import ReviewForm, RatingForm
 # Импортируем модуль для фильтрации по жанрам и годам.
-from django.db.models import Q
+#from django.db.models import Q
 from django.core.paginator import Paginator
 
 
 # Create your views here.
 # Контроллер для показа главной страницы.
-def movies_view(request, page_number=1):
+def movies_view(request):
     # Делаем вывод только тех фильмов, которые не являются черновиками.
     movies = Movie.objects.filter(draft=False).order_by('id')
     # Делаем вывод всех категорий.
@@ -16,16 +16,19 @@ def movies_view(request, page_number=1):
     # Выводим определённое количество фильмов, которые не являются черновиками.
     last_movies = Movie.objects.filter(draft=False).order_by('id')[:5]
     genres = Genre.objects.all()
-    per_page = 1
-    paginator = Paginator(movies, per_page)
-    movies_paginator = paginator.page(page_number)
+    #per_page = 1
+    #paginator = Paginator(movies, per_page)
+    #movies_paginator = paginator.page(page_number)
+    # Фильтруем фильмы по названию без учёта регистра и сравниваем с тем, что пришло в get запросе q.
+    #name_movies = Movie.objects.filter(title__icontains=request.GET.get('q'))
     context = {
-        #'movie_list': movies,
+        'movie_list': movies,
         'category_list': category,
         'last_movies': last_movies,
         'genres': genres,
         'movies': movies.values('year'),
-        'movie_pag': movies_paginator
+        #'movie_pag': movies_paginator,
+        #'q': request.GET.get('q')
     }
     return render(request, 'movies/movies_list.html', context)
 
@@ -90,20 +93,26 @@ def filter_movie(request):
     if request.method == 'POST':
         # Делаем вывод только тех фильмов, которые не являются черновиками.
         movies = Movie.objects.filter(draft=False)
-    else:
-        # Выводим года и жанры, которые входят в список всех годов и жанров.
-        # Делаем вывод только тех фильмов, которые не являются черновиками.
-        # Делаем так, чтобы фильтрация работала не только тогда, когда выбирают и жанр и год, но и когда выбирают
-        # что-то одно.
+    # Устанавливаем работу фильтра если был выбран только год.
+    elif request.GET.get('year') and not request.GET.get('genres'):
         # Если использовать данный способ, то при выборе жанра и года выведутся все фильмы данного жанра, вне
         # зависимости от года. Если нужно выводить что-то именно, то нужно указывать через запятую.
-        movies = Movie.objects.filter(draft=False).filter(
-            Q(year__in=request.GET.getlist('year')) |
-            Q(genres__in=request.GET.getlist('genres'))
-        )
-        #movies = Movie.objects.filter(draft=False). filter(
-        #    year__in=request.GET.getlist('year'), genres__in=request.GET.getlist('genres')
+        #movies = Movie.objects.filter(draft=False).filter(
+        #    Q(year__in=request.GET.getlist('year')) |
+        #    Q(genres__in=request.GET.getlist('genres'))
         #)
+        # Делаем вывод фильмов данного года, которые не являются черновиками.
+        movies = Movie.objects.filter(draft=False).filter(year__in=request.GET.getlist('year'))
+    # Устанавливаем работу фильтра если был выбран только жанр.
+    elif request.GET.get('genres') and not request.GET.get('year'):
+        # Делаем вывод фильмов данного жанра, которые не являются черновиками.
+        movies = Movie.objects.filter(draft=False).filter(genres__in=request.GET.getlist('genres'))
+    # Устанавливаем работу фильтра при выборе года и жанра.
+    else:
+        # Делаем вывод фильмов по данному жанру и году.
+        movies = Movie.objects.filter(draft=False).filter(
+            year__in=request.GET.getlist('year'), genres__in=request.GET.getlist('genres')
+        )
     # Делаем вывод всех категорий.
     category = Category.objects.all()
     # Выводим определённое количество фильмов, которые не являются черновиками.
@@ -160,17 +169,4 @@ def add_rating(request):
         form = RatingForm()
     context = {'form': form}
     return render(request, 'movies/movie_detail.html', context)
-'''
-
-'''
-def movie_paginator(request, page_number=1):
-    movies = Movie.objects.all()
-    per_page = 1
-    paginator = Paginator(movies, per_page)
-    movies_paginator = paginator.page(page_number)
-    context = {
-        'movies': movies_paginator
-    }
-    return render(request, 'movies/movies_list.html', context)
-
 '''

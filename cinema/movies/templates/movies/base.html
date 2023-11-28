@@ -86,14 +86,14 @@
             <div class="row">
                 <!-- product left -->
                 <div class={% block side-bar %} {% endblock %}>
-
+                    <!--Поиск фильма по названию.-->
                     <div class="search-bar w3layouts-newsletter">
                         <h3 class="sear-head editContent" style="outline: none; cursor: inherit;">
                             Поиск фильма</h3>
-                        <form action="#" method="post" class="d-flex editContent">
-                            <input type="search" placeholder="Введите название..." name="search"
+                        <form action="{% url 'movies:search' %}" method="get" class="d-flex editContent">
+                            <input type="search" placeholder="Введите название..." name="q"
                                    class="form-control" required="">
-                            <button class="btn1 btn">
+                            <button type="submit" class="btn1 btn">
                                 <span class="fa fa-search" aria-hidden="true"></span>
                             </button>
                         </form>
