@@ -59,16 +59,16 @@
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
             <!--Если у данного списка нет предыдущих элементов, то делаем кнопку неактивной.-->
-            <li class="page-item {% if not movie_pag.has_previous %} disabled {% endif %}">
+            <li class="page-item {% if not movie_list.has_previous %} disabled {% endif %}">
                 <!--Если у нас есть предыдущая страница, то мы будем добавлять определённый url-адрес,
                 иначе передаём пустую ссылку.-->
                 <a class="page-link"
-                   href="{% if movie_pag.has_previous %} {% url 'movies:paginator' movie_pag.previous_page_number %} {% else %} # {% endif %}"
+                   href="{% if movie_list.has_previous %} {% url 'movies:paginator' movie_list.previous_page_number %} {% else %} # {% endif %}"
                    tabindex="-1" aria-disabled="true">
                     Предыдущая
                 </a>
             </li>
-            {% for page in movie_pag.paginator.page_range %}
+            {% for page in movie_list.paginator.page_range %}
             <li class="page-item">
                 <a class="page-link" href="{% url 'movies:paginator' page %}">
                     {{ page }}
@@ -76,9 +76,9 @@
             </li>
             {% endfor %}
             <!--С кнопкой перехода на следующую страницу делаем всё тоже самое, что и с предыдущей.-->
-            <li class="page-item {% if not movie_pag.has_next %} disabled {% endif %}">
+            <li class="page-item {% if not movie_list.has_next %} disabled {% endif %}">
                 <a class="page-link"
-                   href="{% if movie_pag.has_next %} {% url 'movies:paginator' movie_pag.next_page_number %} {% else %} # {% endif %}">
+                   href="{% if movie_list.has_next %} {% url 'movies:paginator' movie_list.next_page_number %} {% else %} # {% endif %}">
                     Следующая
                 </a>
             </li>
