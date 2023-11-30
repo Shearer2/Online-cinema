@@ -23,6 +23,9 @@ def movies_view(request, page_number=1):
         movies = Movie.objects.filter(draft=False).filter(
             year__in=request.GET.getlist('year'), genres__in=request.GET.getlist('genres')
         ).order_by('id')
+    elif request.GET.get('q'):
+        # Фильтруем фильмы по названию без учёта регистра и сравниваем с тем, что пришло в get запросе q.
+        movies = Movie.objects.filter(draft=False).filter(title__icontains=request.GET.get('q')).order_by('id')
     else:
         # Делаем вывод только тех фильмов, которые не являются черновиками.
         movies = Movie.objects.filter(draft=False).order_by('id')
@@ -42,7 +45,6 @@ def movies_view(request, page_number=1):
         'last_movies': last_movies,
         'genres': genres,
         'movies': Movie.objects.filter(draft=False).values('year'),
-        #'movie_pag': movies_paginator,
         #'q': request.GET.get('q')
     }
     return render(request, 'movies/movies_list.html', context)
