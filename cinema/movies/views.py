@@ -37,15 +37,12 @@ def movies_view(request, page_number=1):
     per_page = 1
     paginator = Paginator(movies, per_page)
     movies_paginator = paginator.page(page_number)
-    # Фильтруем фильмы по названию без учёта регистра и сравниваем с тем, что пришло в get запросе q.
-    #name_movies = Movie.objects.filter(title__icontains=request.GET.get('q'))
     context = {
         'movie_list': movies_paginator,
         'category_list': category,
         'last_movies': last_movies,
         'genres': genres,
-        'movies': Movie.objects.filter(draft=False).values('year'),
-        #'q': request.GET.get('q')
+        'movies': Movie.objects.filter(draft=False).values('year')
     }
     return render(request, 'movies/movies_list.html', context)
 
