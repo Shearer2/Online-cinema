@@ -19,13 +19,18 @@ from django.urls import path, include
 # Импортируем модули необходимые для работы с изображениями.
 from django.conf.urls.static import static
 from django.conf import settings
+from django.conf.urls.i18n import i18n_patterns
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('pages/', include('django.contrib.flatpages.urls')),
-    path('', include('movies.urls')),
-    path('contact/', include('contact.urls')),
+    path('i18n/', include('django.conf.urls.i18n')),
 ]
+
+urlpatterns += i18n_patterns(
+    path('pages/', include('django.contrib.flatpages.urls')),
+    path('contact/', include('contact.urls')),
+    path('', include('movies.urls')),
+)
 
 # Чтобы изображения отображались локально делаем следующую проверку.
 if settings.DEBUG:

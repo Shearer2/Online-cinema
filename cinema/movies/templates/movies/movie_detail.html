@@ -1,4 +1,5 @@
 {% extends 'movies/base.html' %}
+{% load static i18n %}
 {% load static %}
 
 
@@ -17,13 +18,15 @@
             </h3>
             <h5 class="editContent">Terminator: Dark Fate</h5>
             <ul>
-                <li style="list-style: none"><span><b>Год:</b> {{ movie.year }}</span></li>
-                <li style="list-style: none"><span><b>Страна:</b> {{ movie.country }}</span>
+                <!--Чтобы сделать перевод и статической информации необходимо указывать тег trans и текст,
+                который необходимо перевести.-->
+                <li style="list-style: none"><span><b>{% trans 'Год' %}:</b> {{ movie.year }}</span></li>
+                <li style="list-style: none"><span><b>{% trans 'Страна' %}:</b> {{ movie.country }}</span>
                 </li>
-                <li style="list-style: none"><span><b>Слоган:</b> {{ movie.tagline }}</span>
+                <li style="list-style: none"><span><b>{% trans 'Слоган' %}:</b> {{ movie.tagline }}</span>
                 </li>
                 <li style="list-style: none">
-                    <span><b>Режиссер:</b>
+                    <span><b>{% trans 'Режиссер' %}:</b>
                         <!--Так как режиссёры, актёры и жанры это связка многие ко многим, то их
                         необходимо обрабатывать циклом.-->
                         {% for director in movie.directors.all  %}
@@ -34,7 +37,7 @@
                     </span>
                 </li>
                 <li style="list-style: none">
-                    <span><b>Актеры:</b>
+                    <span><b>{% trans 'Актеры' %}:</b>
                         {% for actor in movie.actors.all %}
                         <a href="{% url 'movies:actor_views' actor.name %}">
                             {{ actor.name }}
@@ -43,26 +46,26 @@
                     </span>
                 </li>
                 <li>
-                    <span><b>Жанр:</b>
+                    <span><b>{% trans 'Жанр' %}:</b>
                         {% for genre in movie.genres.all %}
                             {{ genre.name }}
                         {% endfor %}
                     </span>
                 </li>
                 <li>
-                    <span><b>Премьера в мире:</b> {{ movie.world_premiere }}</span>
+                    <span><b>{% trans 'Премьера в мире' %}:</b> {{ movie.world_premiere }}</span>
                 </li>
                 <li>
-                    <span><b>Бюджет:</b> {{ movie.budget }}</span></li>
+                    <span><b>{% trans 'Бюджет' %}:</b> {{ movie.budget }}</span></li>
                 <li>
-                    <span><b>Сборы в США:</b> {{ movie.fees_in_usa }}</span></li>
+                    <span><b>{% trans 'Сборы в США' %}:</b> {{ movie.fees_in_usa }}</span></li>
                 <li>
-                    <span><b>Сборы в мире:</b> {{ movie.fees_in_world }}</span>
+                    <span><b>{% trans 'Сборы в мире' %}:</b> {{ movie.fees_in_world }}</span>
                 </li>
                 <li>
                     <!--Добавляю возможность устанавливать рейтинг к фильмам.-->
                     <form action="{% url 'movies:add_rating' %}" method="post" name="rating">
-                        <b>Рейтинг:</b>
+                        <b>{% trans 'Рейтинг' %}:</b>
                         {% csrf_token %}
                         <input type="hidden" value="{{ movie.id }}" name="movie">
                         <span class="rating">

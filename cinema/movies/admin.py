@@ -1,11 +1,23 @@
+from django import forms
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 from movies.models import Category, Genre, Movie, MovieShots, Actor, Rating, RatingStar, Reviews
+from modeltranslation.admin import TranslationAdmin
 
 
 # Register your models here.
+class MovieAdminForm(forms.ModelForm):
+    description_ru = forms.CharField(label='Описание')
+    description_en = forms.CharField(label='Описание')
+
+    class Meta:
+        model = Movie
+        fields = '__all__'
+
+
+# В тех моделях, которые будут участвовать в переводе, необходимо наследоваться от TranslationAdmin.
 @admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
+class CategoryAdmin(TranslationAdmin):
     """Категории фильмов."""
 
     list_display = ('id', 'name', 'url')
@@ -22,12 +34,12 @@ class ReviewInline(admin.TabularInline):
 
 
 @admin.register(Movie)
-class MovieAdmin(admin.ModelAdmin):
+class MovieAdmin(TranslationAdmin):
     """Отображение фильмов."""
 
     list_display = ('title', 'category', 'url', 'draft', 'get_poster')
     fields = (
-        'title', 'description', ('poster', 'get_poster'), 'year', 'country', 'directors', 'actors', 'genres',
+        'title', 'tagline', 'description', ('poster', 'get_poster'), 'year', 'country', 'directors', 'actors', 'genres',
         'world_premiere', 'budget', 'fees_in_usa', 'fees_in_world', 'category', 'url', 'draft'
     )
     # Добавляем фильтрацию фильмов по категории.
@@ -94,14 +106,14 @@ class ReviewsAdmin(admin.ModelAdmin):
 
 
 @admin.register(Genre)
-class GenreAdmin(admin.ModelAdmin):
+class GenreAdmin(TranslationAdmin):
     """Жанры фильмов."""
 
     list_display = ('name', 'url')
 
 
 @admin.register(MovieShots)
-class MovieShotsAdmin(admin.ModelAdmin):
+class MovieShotsAdmin(TranslationAdmin):
     """Кадры из фильмов."""
 
     list_display = ('title', 'movie', 'get_image')
@@ -114,7 +126,7 @@ class MovieShotsAdmin(admin.ModelAdmin):
 
 
 @admin.register(Actor)
-class ActorAdmin(admin.ModelAdmin):
+class ActorAdmin(TranslationAdmin):
     """Актёры."""
 
     # Добавляем сюда имя нашего метода.
