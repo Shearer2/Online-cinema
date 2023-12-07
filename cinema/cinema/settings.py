@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.flatpages',
     'movies',
     'contact',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -146,3 +147,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 SITE_ID = 1
+
+# Глобально определяем переменную для работы с пользователями.
+AUTH_USER_MODEL = 'users.User'
+LOGIN_URL = '/users/login'
