@@ -5,7 +5,7 @@ from movies.views import movies_view, movie_detail, add_review, actor_views, add
 app_name = 'movies'
 
 urlpatterns = [
-    path('', movies_view),
+    path('', movies_view, name='movie'),
     path('page/<int:page_number>', movies_view, name='paginator'),
     #path('filter/', filter_movie, name='filter'),
     path('filter/', movies_view, name='filter'),

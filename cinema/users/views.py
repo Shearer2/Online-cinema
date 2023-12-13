@@ -26,7 +26,7 @@ def login(request):
             if user:
                 auth.login(request, user)
                 # Перенаправляем пользователя после авторизации на главную страницу.
-                return HttpResponseRedirect(reverse('movies'))
+                return HttpResponseRedirect(reverse('movies:movie'))
     else:
         # Если происходит GET запрос, то возвращаем нашу форму.
         form = UserLoginForm()
