@@ -43,7 +43,7 @@
                     <label for="drop" class="toggle">Menu</label>
                     <input type="checkbox" id="drop">
                     <ul class="menu mt-2">
-                        <li class="active"><a href="index.html">Главная</a></li>
+                        <li class="active"><a href="{% url 'movies:movie' %}">Главная</a></li>
                         <li>
                             <!-- First Tier Drop Down -->
                             <label for="drop-2" class="toggle">Категории <span
@@ -62,13 +62,21 @@
                                 {% endfor %}
                             </ul>
                         </li>
+                        {% if user.is_authenticated %}
+                        <li>
+                            <a href="{% url 'users:logout' %}"
+                               style="color: rgb(255, 255, 255); font-weight: 700; text-transform: uppercase;">
+                                Выход
+                            </a>
+                        </li>
+                        {% else %}
                         <li>
                             <a href="{% url 'users:login' %}"
                                style="color: rgb(255, 255, 255); font-weight: 700; text-transform: uppercase;">
                                 Вход
                             </a>
                         </li>
-
+                        {% endif %}
                         <li>
                             <!--Добавляем форму для перевода, которая будет показывать все зарегистрированные языки.-->
                             <form action="{% url 'set_language' %}" method="post">
@@ -97,7 +105,7 @@
     </div>
     <ol class="breadcrumb editContent">
         <li class="breadcrumb-item">
-            <a href="index.html" class="editContent">
+            <a href="{% url 'movies:movie' %}" class="editContent">
                 Home
             </a>
         </li>

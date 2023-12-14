@@ -112,7 +112,7 @@
     </div>
     <div class="row sub-para-w3layouts mt-5">
 
-        <h3 class="shop-sing editContent" style="outline: none; cursor: inherit;">
+        <h3 class="shop-sing editContent">
             О фильме {{ movie.title }}
         </h3>
         <p>
@@ -143,7 +143,9 @@
             <div class="contact-single">
                 <h3 class="editContent">
                     <!--Выводим количество отзывов у определённого фильма.-->
-                    <span class="sub-tittle editContent">{{ movie.reviews_set.count }}</span>Оставить отзыв</h3>
+                    <span class="sub-tittle editContent">{{ movie.reviews_set.count }}</span>
+                    Оставить отзыв
+                </h3>
                 <form action="{% url 'movies:add_review' movie.id %}" method="post" class="mt-4" id="formReview">
                     {% csrf_token %}
                     <!--Добавляем через input возможность отвечать на какой-то определённый отзыв по id.-->

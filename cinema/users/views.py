@@ -54,4 +54,4 @@ def registration(request):
 # Контроллер для выхода из системы.
 def logout(request):
     auth.logout(request)
-    return HttpResponseRedirect(reverse('movies'))
+    return HttpResponseRedirect(reverse('movies:movie'))
