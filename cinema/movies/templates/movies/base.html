@@ -43,7 +43,9 @@
                     <label for="drop" class="toggle">Menu</label>
                     <input type="checkbox" id="drop">
                     <ul class="menu mt-2">
-                        <li class="active"><a href="{% url 'movies:movie' %}">Главная</a></li>
+                        <li>
+                            <a href="{% url 'movies:movie' %}">Главная</a>
+                        </li>
                         <li>
                             <!-- First Tier Drop Down -->
                             <label for="drop-2" class="toggle">Категории <span
@@ -63,6 +65,9 @@
                             </ul>
                         </li>
                         {% if user.is_authenticated %}
+                        <li>
+                            <a href="#"> {{ user.username }} </a>
+                        </li>
                         <li>
                             <a href="{% url 'users:logout' %}"
                                style="color: rgb(255, 255, 255); font-weight: 700; text-transform: uppercase;">
@@ -87,10 +92,10 @@
                                     {% get_available_languages as LANGUAGES %}
                                     {% get_language_info_list for LANGUAGES as languages %}
                                     {% for language in languages %}
-                                        <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %}
-                                                selected{% endif %}>
-                                            {{ language.name_local }} ({{ language.code }})
-                                        </option>
+                                    <option value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %}
+                                            selected{% endif %}>
+                                        {{ language.name_local }} ({{ language.code }})
+                                    </option>
                                     {% endfor %}
                                 </select>
                                 <input type="submit" value="Go">

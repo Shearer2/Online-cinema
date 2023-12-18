@@ -2,7 +2,6 @@ from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from movies.models import Movie, Category, Actor, Genre, Rating
 from movies.forms import ReviewForm, RatingForm
 # Импортируем модуль для фильтрации по жанрам и годам.
-#from django.db.models import Q
 from django.core.paginator import Paginator
 
 
