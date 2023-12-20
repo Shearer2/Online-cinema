@@ -79,10 +79,6 @@ def add_review(request, pk):
             # Достаём значение ключа parent, чтобы прикрепить к отзыву родителя.
             form.parent_id = int(request.POST.get('parent'))
         # В данном поле необходимо указать фильм, к которому мы хотим привязаться.
-        # Столбец movie в базе данных обозначен как movie_id, таким образом можно передавать значение для привязки к
-        # какому-либо фильму. Если мы будем использовать просто поле movie, то мы можем передавать объект самого фильма.
-        #form.movie_id = pk
-        # Второй вариант.
         form.movie = movie
         form.save()
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
@@ -100,46 +96,6 @@ def actor_views(request, slug):
     }
     return render(request, 'movies/actor.html', context)
 
-'''
-# Контроллер для фильтрации фильмов.
-def filter_movie(request):
-    if request.method == 'POST':
-        # Делаем вывод только тех фильмов, которые не являются черновиками.
-        movies = Movie.objects.filter(draft=False)
-    # Устанавливаем работу фильтра если был выбран только год.
-    elif request.GET.get('year') and not request.GET.get('genres'):
-        # Если использовать данный способ, то при выборе жанра и года выведутся все фильмы данного жанра, вне
-        # зависимости от года. Если нужно выводить что-то именно, то нужно указывать через запятую.
-        #movies = Movie.objects.filter(draft=False).filter(
-        #    Q(year__in=request.GET.getlist('year')) |
-        #    Q(genres__in=request.GET.getlist('genres'))
-        #)
-        # Делаем вывод фильмов данного года, которые не являются черновиками.
-        movies = Movie.objects.filter(draft=False).filter(year__in=request.GET.getlist('year'))
-    # Устанавливаем работу фильтра если был выбран только жанр.
-    elif request.GET.get('genres') and not request.GET.get('year'):
-        # Делаем вывод фильмов данного жанра, которые не являются черновиками.
-        movies = Movie.objects.filter(draft=False).filter(genres__in=request.GET.getlist('genres'))
-    # Устанавливаем работу фильтра при выборе года и жанра.
-    else:
-        # Делаем вывод фильмов по данному жанру и году.
-        movies = Movie.objects.filter(draft=False).filter(
-            year__in=request.GET.getlist('year'), genres__in=request.GET.getlist('genres')
-        )
-    # Делаем вывод всех категорий.
-    category = Category.objects.all()
-    # Выводим определённое количество фильмов, которые не являются черновиками.
-    last_movies = Movie.objects.filter(draft=False).order_by('id')[:5]
-    genres = Genre.objects.all()
-    context = {
-        'movie_list': movies,
-        'category_list': category,
-        'last_movies': last_movies,
-        'genres': genres,
-        'movies': Movie.objects.filter(draft=False).values('year')
-    }
-    return render(request, 'movies/movies_list.html', context)
-'''
 
 # Контроллер для получения ip-адреса пользователя, который отправил запрос.
 def get_client_ip(request):

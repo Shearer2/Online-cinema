@@ -7,7 +7,6 @@ app_name = 'movies'
 urlpatterns = [
     path('', movies_view, name='movie'),
     path('page/<int:page_number>', movies_view, name='paginator'),
-    #path('filter/', filter_movie, name='filter'),
     path('filter/', movies_view, name='filter'),
     path('search/', movies_view, name='search'),
     path('add-rating/', add_rating, name='add_rating'),

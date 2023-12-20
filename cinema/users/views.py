@@ -2,7 +2,6 @@ from django.shortcuts import render, HttpResponseRedirect
 # Импортируем приложение auth, чтобы узнать существует ли пользователь.
 from django.contrib import auth, messages
 from django.urls import reverse
-from users.models import User
 # Импортируем класс, чтобы присоединить форму к приложению.
 from users.forms import UserLoginForm, UserRegistrationForm
 
