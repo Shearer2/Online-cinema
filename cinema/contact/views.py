@@ -9,7 +9,7 @@ def contact(request):
         form = ContactForm(data=request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('contact'))
+            return HttpResponseRedirect(reverse('movies:movie'))
     else:
         form = ContactForm()
     context = {'form': form}
