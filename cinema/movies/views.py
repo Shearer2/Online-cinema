@@ -1,6 +1,7 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from movies.models import Movie, Category, Actor, Genre, Rating
-from movies.forms import ReviewForm, RatingForm
+from movies.forms import ReviewForm, RatingForm, ContactForm
+from django.urls import reverse
 # Импортируем модуль для фильтрации по жанрам и годам.
 from django.core.paginator import Paginator
 
@@ -139,3 +140,15 @@ def add_rating(request):
     context = {'form': form}
     return render(request, 'movies/movie_detail.html', context)
 '''
+
+
+def contact(request):
+    if request.method == 'POST':
+        form = ContactForm(data=request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('movies:movie'))
+    else:
+        form = ContactForm()
+    context = {'form': form}
+    return render(request, 'movies/base.html', context)

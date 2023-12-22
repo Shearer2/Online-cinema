@@ -1,5 +1,5 @@
 from django import forms
-from movies.models import Reviews, Rating, RatingStar
+from movies.models import Reviews, Rating, RatingStar, Contact
 
 
 class ReviewForm(forms.ModelForm):
@@ -19,3 +19,16 @@ class RatingForm(forms.ModelForm):
         model = Rating
         fields = ('star',)
 
+
+class ContactForm(forms.ModelForm):
+    email = forms.EmailField(widget=forms.TextInput(attrs={
+        'class': 'editContent', 'placeholder': 'Enter your email...'
+    }))
+
+    class Meta:
+        model = Contact
+        fields = ('email',)
+        # Убираем label.
+        labels = {
+            'email': ''
+        }

@@ -137,3 +137,13 @@ class Reviews(models.Model):
     class Meta:
         verbose_name = 'Отзыв'
         verbose_name_plural = 'Отзывы'
+
+
+class Contact(models.Model):
+    """Подписка по email"""
+    email = models.EmailField()
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.email
+

@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib import admin
 from django.utils.safestring import mark_safe
-from movies.models import Category, Genre, Movie, MovieShots, Actor, Rating, RatingStar, Reviews
+from movies.models import Category, Genre, Movie, MovieShots, Actor, Rating, RatingStar, Reviews, Contact
 from modeltranslation.admin import TranslationAdmin
 
 
@@ -156,3 +156,7 @@ class RatingStarAdmin(admin.ModelAdmin):
 
     list_display = ('value',)
 
+
+@admin.register(Contact)
+class ContactAdmin(admin.ModelAdmin):
+    list_display = ('email', 'date')

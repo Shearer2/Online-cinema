@@ -1,7 +1,3 @@
-{% extends 'movies/base.html' %}
-{% load static %}
-
-{% block footer %}
 <footer class="editContent">
     <div class="container">
         <div class="row footer-top">
@@ -49,7 +45,7 @@
 
                     <p class="editContent">By subscribing to our mailing list you will always get latest news and
                         updates from us.</p>
-                    <form action="{% url 'contact' %}" method="post" class="w3layouts-newsletter">
+                    <form action="{% url 'movies:contact' %}" method="post" class="w3layouts-newsletter">
                         {% csrf_token %}
                         {{ form.email }}
                         <button class="btn1 btn"><span class="fa fa-paper-plane-o" aria-hidden="true"></span>
@@ -119,4 +115,3 @@
         </div>
     </div>
 </footer>
-{% endblock %}
