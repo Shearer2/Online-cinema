@@ -48,7 +48,8 @@
                     <form action="{% url 'movies:contact' %}" method="post" class="w3layouts-newsletter">
                         {% csrf_token %}
                         {{ form.email }}
-                        <button class="btn1 btn"><span class="fa fa-paper-plane-o" aria-hidden="true"></span>
+                        <button class="btn1 btn">
+                            <span class="fa fa-paper-plane-o" aria-hidden="true"></span>
                         </button>
                     </form>
 

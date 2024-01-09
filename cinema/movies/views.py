@@ -42,7 +42,8 @@ def movies_view(request, page_number=1):
         'category_list': category,
         'last_movies': last_movies,
         'genres': genres,
-        'movies': Movie.objects.filter(draft=False).values('year')
+        'movies': Movie.objects.filter(draft=False).values('year'),
+        'form': contact(request)
     }
     return render(request, 'movies/movies_list.html', context)
 
@@ -61,7 +62,8 @@ def movie_detail(request, slug):
         'last_movies': last_movies,
         'genres': genres,
         'movies': movies.values('year'),
-        'star_form': RatingForm()
+        'star_form': RatingForm(),
+        'form': contact(request)
     }
     return render(request, 'movies/movie_detail.html', context)
 
@@ -93,7 +95,8 @@ def actor_views(request, slug):
     context = {
         'actor': slug_field,
         'genres': genres,
-        'movies': movies.values('year')
+        'movies': movies.values('year'),
+        'form': contact(request)
     }
     return render(request, 'movies/actor.html', context)
 
@@ -150,5 +153,6 @@ def contact(request):
             return HttpResponseRedirect(reverse('movies:movie'))
     else:
         form = ContactForm()
-    context = {'form': form}
-    return render(request, 'movies/base.html', context)
+    return form
+    #context = {'form': form}
+    #return render(request, 'movies/base.html', context)
