@@ -22,7 +22,7 @@ class RatingForm(forms.ModelForm):
 
 class ContactForm(forms.ModelForm):
     email = forms.EmailField(widget=forms.TextInput(attrs={
-        'class': 'editContent', 'placeholder': 'Enter your email...'
+        'placeholder': 'Enter your email...'
     }))
 
     class Meta:
