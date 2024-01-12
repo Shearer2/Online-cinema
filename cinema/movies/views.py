@@ -1,7 +1,6 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from movies.models import Movie, Category, Actor, Genre, Rating
 from movies.forms import ReviewForm, RatingForm, ContactForm
-from django.urls import reverse
 # Импортируем модуль для фильтрации по жанрам и годам.
 from django.core.paginator import Paginator
 
@@ -9,26 +8,7 @@ from django.core.paginator import Paginator
 # Create your views here.
 # Контроллер для показа главной страницы.
 def movies_view(request, page_number=1):
-    # Устанавливаем работу фильтра если был выбран только год.
-    if request.GET.get('year') and not request.GET.get('genres'):
-        # Делаем вывод фильмов данного года, которые не являются черновиками.
-        movies = Movie.objects.filter(draft=False).filter(year__in=request.GET.getlist('year')).order_by('id')
-    # Устанавливаем работу фильтра если был выбран только жанр.
-    elif request.GET.get('genres') and not request.GET.get('year'):
-        # Делаем вывод фильмов данного жанра, которые не являются черновиками.
-        movies = Movie.objects.filter(draft=False).filter(genres__in=request.GET.getlist('genres')).order_by('id')
-    # Устанавливаем работу фильтра при выборе года и жанра.
-    elif request.GET.get('year') and request.GET.get('genres'):
-        # Делаем вывод фильмов по данному жанру и году.
-        movies = Movie.objects.filter(draft=False).filter(
-            year__in=request.GET.getlist('year'), genres__in=request.GET.getlist('genres')
-        ).order_by('id')
-    elif request.GET.get('q'):
-        # Фильтруем фильмы по названию без учёта регистра и сравниваем с тем, что пришло в get запросе q.
-        movies = Movie.objects.filter(draft=False).filter(title__icontains=request.GET.get('q')).order_by('id')
-    else:
-        # Делаем вывод только тех фильмов, которые не являются черновиками.
-        movies = Movie.objects.filter(draft=False).order_by('id')
+    movies = filter_movies(request)
     # Делаем вывод всех категорий.
     category = Category.objects.all()
     # Выводим определённое количество фильмов, которые не являются черновиками.
@@ -145,12 +125,35 @@ def add_rating(request):
 '''
 
 
+def filter_movies(request):
+    # Устанавливаем работу фильтра если был выбран только год.
+    if request.GET.get('year') and not request.GET.get('genres'):
+        # Делаем вывод фильмов данного года, которые не являются черновиками.
+        movies = Movie.objects.filter(draft=False).filter(year__in=request.GET.getlist('year')).order_by('id')
+    # Устанавливаем работу фильтра если был выбран только жанр.
+    elif request.GET.get('genres') and not request.GET.get('year'):
+        # Делаем вывод фильмов данного жанра, которые не являются черновиками.
+        movies = Movie.objects.filter(draft=False).filter(genres__in=request.GET.getlist('genres')).order_by('id')
+    # Устанавливаем работу фильтра при выборе года и жанра.
+    elif request.GET.get('year') and request.GET.get('genres'):
+        # Делаем вывод фильмов по данному жанру и году.
+        movies = Movie.objects.filter(draft=False).filter(
+            year__in=request.GET.getlist('year'), genres__in=request.GET.getlist('genres')
+        ).order_by('id')
+    elif request.GET.get('q'):
+        # Фильтруем фильмы по названию без учёта регистра и сравниваем с тем, что пришло в get запросе q.
+        movies = Movie.objects.filter(draft=False).filter(title__icontains=request.GET.get('q')).order_by('id')
+    else:
+        # Делаем вывод только тех фильмов, которые не являются черновиками.
+        movies = Movie.objects.filter(draft=False).order_by('id')
+    return movies
+
+
 def contact(request):
     if request.method == 'POST':
         form = ContactForm(data=request.POST)
         if form.is_valid():
             form.save()
-            #return HttpResponseRedirect(reverse('movies:movie'))
     else:
         form = ContactForm()
     return form
