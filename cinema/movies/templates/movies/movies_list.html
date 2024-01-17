@@ -55,7 +55,7 @@
         <span class="money editContent" >Flat 50% Off</span>
         <a href="moviesingle.html" class="btn" >Now</a>
     </div>-->
-
+    {% if movie_list.paginator.num_pages > 1 %}
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
             <!--Если у данного списка нет предыдущих элементов, то делаем кнопку неактивной.-->
@@ -84,6 +84,7 @@
             </li>
         </ul>
     </nav>
+    {% endif %}
 
 </div>
 {% endblock %}

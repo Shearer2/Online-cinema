@@ -8992,7 +8992,8 @@ a.text-dark:hover, a.text-dark:focus {
 .pagination {
   display: -ms-flexbox;
   display: flex;
-  padding-left: 0;
+  padding-right: 50%;
+  padding-top: 5%;
   list-style: none;
   border-radius: 0.25rem;
 }

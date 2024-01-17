@@ -14,7 +14,10 @@ def movies_view(request, page_number=1):
     # Выводим определённое количество фильмов, которые не являются черновиками.
     last_movies = Movie.objects.filter(draft=False).order_by('id')[:5]
     genres = Genre.objects.all()
-    per_page = 1
+    if request.GET.get('q'):
+        per_page = len(movies)
+    else:
+        per_page = 1
     paginator = Paginator(movies, per_page)
     movies_paginator = paginator.page(page_number)
     context = {
@@ -142,7 +145,7 @@ def filter_movies(request):
         ).order_by('id')
     elif request.GET.get('q'):
         # Фильтруем фильмы по названию без учёта регистра и сравниваем с тем, что пришло в get запросе q.
-        movies = Movie.objects.filter(draft=False).filter(title__icontains=request.GET.get('q')).order_by('id')
+        movies = Movie.objects.filter(draft=False).filter(title__iregex=request.GET.get('q')).order_by('id')
     else:
         # Делаем вывод только тех фильмов, которые не являются черновиками.
         movies = Movie.objects.filter(draft=False).order_by('id')
