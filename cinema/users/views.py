@@ -2,8 +2,10 @@ from django.shortcuts import render, HttpResponseRedirect
 # Импортируем приложение auth, чтобы узнать существует ли пользователь.
 from django.contrib import auth, messages
 from django.urls import reverse
+# Подключаем модуль, который не будет обрабатывать контроллер, пока не будет произведена авторизация.
+from django.contrib.auth.decorators import login_required
 # Импортируем класс, чтобы присоединить форму к приложению.
-from users.forms import UserLoginForm, UserRegistrationForm
+from users.forms import UserLoginForm, UserRegistrationForm, UserProfileForm
 
 
 # Create your views here.
@@ -54,3 +56,26 @@ def registration(request):
 def logout(request):
     auth.logout(request)
     return HttpResponseRedirect(reverse('movies:movie'))
+
+
+# Контроллер доступа для профиля.
+@login_required
+def profile(request):
+    if request.method == 'POST':
+        # Чтобы можно было изменять данные и сохранять их, необходимо указать не просто data, но и instance.
+        # При помощи переменной files передаётся изменённое изображение.
+        form = UserProfileForm(instance=request.user, data=request.POST, files=request.FILES)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('users:profile'))
+        else:
+            print(form.errors)
+    else:
+        # Данные должны быть как при GET запросе, так и при POST запросе.
+        form = UserProfileForm(instance=request.user)
+
+    context = {
+        'title': 'Store - Профиль',
+        'form': form,
+    }
+    return render(request, 'users/profile.html', context)
