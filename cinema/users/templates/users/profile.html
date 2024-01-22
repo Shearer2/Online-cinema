@@ -1,7 +1,6 @@
+<!DOCTYPE html>
 {% load static %}
 
-
-<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -10,8 +9,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
-    <title>{{ title }}</title>
 
     <!-- Bootstrap core CSS -->
     <!--Данным образом добавляется static к путям.-->
@@ -27,30 +24,20 @@
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
-        <a class="navbar-brand" href="#">Store</a>
+        <a class="navbar-brand" href="{% url 'movies:movie' %}">DjangoMovie</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                 aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <!--Указываем динамический url-адрес, в кавычках пишем name из файла urls и переменной
-                    urlpatterns-->
-                    <a class="nav-link" href="#">Каталог <i class="fas fa-shopping-bag"></i> </a>
-                </li>
                 <!--Если пользователь зашёл в свой аккаунт, то выводим его данный шаблон.-->
-                {% if user.is_authenticated %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fas fa-user-circle"></i>
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li>
-                            <a class="dropdown-item" href="{% url 'users:profile' %}">Профиль</a>
-                        </li>
-                        <li><a class="dropdown-item" href="orders/orders.html">Заказы</a></li>
                         <!--Если пользователь является супер пользователем или сотрудником, то мы показываем ему
                         данную кнопку.-->
                         {% if user.is_superuser or user.is_staff %}
@@ -72,12 +59,6 @@
                         </li>
                     </ul>
                 </li>
-                {% else %}
-                <li class="nav-item">
-                    <!--Добавляем ссылку на регистрацию пользователя.-->
-                    <a class="nav-link" href="{% url 'users:login' %}">Войти <i class="fas fa-sign-in-alt"></i></a>
-                </li>
-                {% endif %}
             </ul>
         </div>
     </div>
@@ -90,7 +71,7 @@
             <div class="col-lg-12 text-center">
                 <!--Можно на прямую обращаться к user.-->
                 <img width="100" height="100"
-                     src="{% if user.image %} {{ user.image.url }} {% else %} {% static 'vendor\img\users\default_avatar.jpg' %} {% endif %}"
+                     src="{% if user.image %} {{ user.image.url }} {% else %} {% static 'images\default_avatar.jpg' %} {% endif %}"
                      class="img-thumbnail">
             </div>
             <!--enctype позволяет работать с изображениями.-->
