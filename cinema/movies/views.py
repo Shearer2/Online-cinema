@@ -46,7 +46,7 @@ def movie_detail(request, slug):
         'genres': genres,
         'movies': movies.values('year'),
         'star_form': RatingForm(),
-        'form': contact(request)
+        'form': contact(request),
     }
     return render(request, 'movies/movie_detail.html', context)
 
