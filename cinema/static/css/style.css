@@ -658,8 +658,8 @@ span.product-new-top {
     overflow: hidden;
     vertical-align: bottom;
     display: inline-block;
-    width: 155px;
-    height: 30px;
+    width: 121px;
+    height: 24px;
 }
 
 .rating > input {
@@ -672,17 +672,16 @@ span.product-new-top {
     display: block;
     float: right;
     background: url('../images/star-off-big.png');
-    background-size: 30px 30px;
+    background-size: 25px 25px;
 }
 
 .rating > label:before {
     display: block;
     opacity: 0;
     content: '';
-    width: 30px;
-    height: 30px;
+    width: 24px;
+    height: 25px;
     background: url('../images/star-on-big.png');
-    background_size: 30px 30px;
     transition: opacity 0.2s linear;
 }
 

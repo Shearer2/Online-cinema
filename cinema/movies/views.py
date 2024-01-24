@@ -96,22 +96,23 @@ def get_client_ip(request):
 
 # Добавляем возможность устанавливать рейтинг фильма.
 def add_rating(request):
-    # Генерируем форму передавая ей post запрос.
-    form = RatingForm(request.POST)
-    # Так как один и тот же пользователь не может устанавливать разные рейтинги к одному фильму, то есть если уже был
-    # добавлен его рейтинг, то нужно его перезаписать, делаем это после проверки валидности формы.
-    if form.is_valid():
-        # Используем update_or_create чтобы можно было либо создавать запись, либо обновлять её если она уже была
-        # создана.
-        Rating.objects.update_or_create(
-            ip=get_client_ip(request),
-            movie_id=int(request.POST.get('movie')),
-            defaults={'star_id': int(request.POST.get('star'))}
-        )
-        form.save()
-        return HttpResponse(status=201)
-    else:
-        return HttpResponse(status=400)
+    if request.GET.get('rating'):
+        # Генерируем форму передавая ей post запрос.
+        form = RatingForm(request.POST)
+        # Так как один и тот же пользователь не может устанавливать разные рейтинги к одному фильму, то есть если уже
+        # был добавлен его рейтинг, то нужно его перезаписать, делаем это после проверки валидности формы.
+        if form.is_valid():
+            # Используем update_or_create чтобы можно было либо создавать запись, либо обновлять её если она уже была
+            # создана.
+            Rating.objects.update_or_create(
+                ip=get_client_ip(request),
+                movie_id=int(request.POST.get('movie')),
+                defaults={'star_id': int(request.POST.get('star'))}
+            )
+            form.save()
+            return HttpResponse(status=201)
+        else:
+            return HttpResponse(status=400)
 
 
 '''
