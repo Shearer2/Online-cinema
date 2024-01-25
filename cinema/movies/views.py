@@ -75,11 +75,14 @@ def actor_views(request, slug):
     slug_field = Actor.objects.get(name=slug)
     genres = Genre.objects.all()
     movies = Movie.objects.filter(draft=False)
+    # Выводим определённое количество фильмов, которые не являются черновиками.
+    last_movies = Movie.objects.filter(draft=False).order_by('id')[:5]
     context = {
         'actor': slug_field,
         'genres': genres,
         'movies': movies.values('year'),
-        'form': contact(request)
+        'form': contact(request),
+        'last_movies': last_movies
     }
     return render(request, 'movies/actor.html', context)
 
