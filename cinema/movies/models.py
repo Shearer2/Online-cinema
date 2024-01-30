@@ -64,6 +64,7 @@ class Movie(models.Model):
     category = models.ForeignKey(Category, verbose_name='Категория', on_delete=models.SET_NULL, null=True)
     url = models.SlugField(max_length=160, unique=True)
     draft = models.BooleanField('Черновик', default=False)
+    link = models.CharField(max_length=160, default='')
 
     def __str__(self):
         return self.title

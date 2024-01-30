@@ -40,7 +40,7 @@ class MovieAdmin(TranslationAdmin):
     list_display = ('title', 'category', 'url', 'draft', 'get_poster')
     fields = (
         'title', 'tagline', 'description', ('poster', 'get_poster'), 'year', 'country', 'directors', 'actors', 'genres',
-        'world_premiere', 'budget', 'fees_in_usa', 'fees_in_world', 'category', 'url', 'draft'
+        'world_premiere', 'budget', 'fees_in_usa', 'fees_in_world', 'category', 'url', 'link', 'draft'
     )
     # Добавляем фильтрацию фильмов по категории.
     list_filter = ('category',)
