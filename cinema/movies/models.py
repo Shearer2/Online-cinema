@@ -23,6 +23,7 @@ class Actor(models.Model):
     age = models.PositiveSmallIntegerField('Возраст', default=0)
     description = models.TextField('Описание')
     image = models.ImageField('Изображение', upload_to='actors/')
+    link = models.CharField(max_length=160, default='')
 
     def __str__(self):
         return self.name
