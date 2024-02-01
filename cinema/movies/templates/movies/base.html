@@ -26,7 +26,8 @@
 </head>
 <body>
 <div id="page" class="page">
-    <div class="main-banner inner bg bg1" id="home" style="background: url({% static 'images/banner.jpg' %})no-repeat center; background-size: cover;">
+    <div class="main-banner inner bg bg1" id="home"
+         style="background: url({% block image %} https://kartinki.pics/pics/uploads/posts/2022-08/1660611412_1-kartinkin-net-p-oboi-v-khoroshem-kachestve-na-kompyuter-kr-1.jpg {% endblock %})no-repeat center; background-size: cover; background-position: 0% 30%;">
         <!-- header -->
         <header class="header">
             <div class="container-fluid px-lg-5">
@@ -49,9 +50,10 @@
                         </li>
                         <li>
                             <!-- First Tier Drop Down -->
-                            <label for="drop-2" class="toggle">Категории <span
-                                    class="fa fa-angle-down" aria-hidden="true"
-                                    style="outline: none; cursor: inherit;"></span> </label>
+                            <label for="drop-2" class="toggle">
+                                Категории
+                                <span class="fa fa-angle-down" aria-hidden="true"></span>
+                            </label>
                             <a href="#">Категории <span class="fa fa-angle-down"
                                                         aria-hidden="true"></span></a>
                             <input type="checkbox" id="drop-2">

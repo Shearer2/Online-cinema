@@ -23,7 +23,8 @@ class Actor(models.Model):
     age = models.PositiveSmallIntegerField('Возраст', default=0)
     description = models.TextField('Описание')
     image = models.ImageField('Изображение', upload_to='actors/')
-    link = models.CharField(max_length=160, default='')
+    link_video = models.CharField(verbose_name='Ссылка на видео', max_length=160, default='')
+    link_image = models.CharField(verbose_name='Ссылка на изображение', max_length=160, default='')
 
     def __str__(self):
         return self.name
@@ -65,7 +66,8 @@ class Movie(models.Model):
     category = models.ForeignKey(Category, verbose_name='Категория', on_delete=models.SET_NULL, null=True)
     url = models.SlugField(max_length=160, unique=True)
     draft = models.BooleanField('Черновик', default=False)
-    link = models.CharField(max_length=160, default='')
+    link_video = models.CharField(verbose_name='Ссылка на видео', max_length=160, default='')
+    link_image = models.CharField(verbose_name='Ссылка на изображение', max_length=160, default='')
 
     def __str__(self):
         return self.title

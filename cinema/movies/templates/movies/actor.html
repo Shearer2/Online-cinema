@@ -2,6 +2,7 @@
 {% load static %}
 
 
+{% block image %} {{ actor.link_image }} {% endblock %}
 {% block banner-style %}"outline: none; outline-offset: -2px; cursor: inherit; color: rgb(33, 37, 41); font-size: 16px; background-color: rgba(0, 0, 0, 0); font-family: Lato, sans-serif;"{% endblock %}
 {% block container %}"container py-md-3"{% endblock %}
 {% block side-bar %}"side-bar col-lg-4"{% endblock %}
@@ -59,7 +60,7 @@
         </p>
         <p class="mt-3 italic-blue editContent">
             <iframe width="560" height="315"
-                    src="{{ actor.link }}"
+                    src="{{ actor.link_video }}"
                     frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                     allowfullscreen>
             </iframe>
