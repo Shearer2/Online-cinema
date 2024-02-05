@@ -39,7 +39,6 @@ def movie_detail(request, slug):
     last_movies = Movie.objects.filter(draft=False).order_by('id')[:5]
     genres = Genre.objects.all()
     movies = Movie.objects.filter(draft=False)
-    print(movie.poster)
     context = {
         'movie': movie,
         'category_list': category,
