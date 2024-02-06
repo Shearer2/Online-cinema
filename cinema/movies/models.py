@@ -134,6 +134,7 @@ class Reviews(models.Model):
     parent = models.ForeignKey('self', verbose_name='Родитель', on_delete=models.SET_NULL, blank=True, null=True)
     # Каскадное удаление удалит отзыв вместе с фильмом.
     movie = models.ForeignKey(Movie, verbose_name='Фильм', on_delete=models.CASCADE)
+    link_image = models.CharField(verbose_name='Ссылка на изображение', max_length=160, default='')
 
     def __str__(self):
         return f"{self.name} - {self.movie}"

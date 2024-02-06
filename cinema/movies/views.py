@@ -3,6 +3,9 @@ from movies.models import Movie, Category, Actor, Genre, Rating
 from movies.forms import ReviewForm, RatingForm, ContactForm
 # Импортируем модуль для фильтрации по жанрам и годам.
 from django.core.paginator import Paginator
+from users.models import User
+# Подключаем модель для проверки какой пользователь авторизован.
+from django.contrib.auth import get_user
 
 
 # Create your views here.
@@ -55,15 +58,25 @@ def movie_detail(request, slug):
 def add_review(request, pk):
     form = ReviewForm(request.POST)
     movie = Movie.objects.get(id=pk)
+    # Если пользователь авторизован, то забираю его имя пользователя.
+    nickname = get_user(request)
     if form.is_valid():
         # Вызывая метод save и передавая аргумент commit=False мы указываем, что хотим приостановить сохранение нашей
         # формы.
         form = form.save(commit=False)
+        print(form.__dict__)
+        print(form.name)
         # Ищем в POST запросе ключ parent, который является именем определённого поля, если оно будет, то выполняется
         # данное условие, иначе выполняется None.
         if request.POST.get('parent', None):
             # Достаём значение ключа parent, чтобы прикрепить к отзыву родителя.
             form.parent_id = int(request.POST.get('parent'))
+        # Если пользователь не является не авторизованным, то получаю всю информацию о нём и забираю аватарку.
+        if str(nickname) != 'AnonymousUser':
+            user = User.objects.get(username=nickname)
+            form.link_image = str(user.image)
+        else:
+            form.link_image = 'users_image/avatar.jpg'
         # В данном поле необходимо указать фильм, к которому мы хотим привязаться.
         form.movie = movie
         form.save()
