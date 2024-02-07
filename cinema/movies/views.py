@@ -64,8 +64,6 @@ def add_review(request, pk):
         # Вызывая метод save и передавая аргумент commit=False мы указываем, что хотим приостановить сохранение нашей
         # формы.
         form = form.save(commit=False)
-        print(form.__dict__)
-        print(form.name)
         # Ищем в POST запросе ключ parent, который является именем определённого поля, если оно будет, то выполняется
         # данное условие, иначе выполняется None.
         if request.POST.get('parent', None):
@@ -74,9 +72,9 @@ def add_review(request, pk):
         # Если пользователь не является не авторизованным, то получаю всю информацию о нём и забираю аватарку.
         if str(nickname) != 'AnonymousUser':
             user = User.objects.get(username=nickname)
-            form.link_image = str(user.image)
+            form.link_image = '/media/' + str(user.image)
         else:
-            form.link_image = 'users_image/avatar.jpg'
+            form.link_image = '/media/users_image/avatar.jpg'
         # В данном поле необходимо указать фильм, к которому мы хотим привязаться.
         form.movie = movie
         form.save()
