@@ -72,7 +72,10 @@ def add_review(request, pk):
         # Если пользователь не является не авторизованным, то получаю всю информацию о нём и забираю аватарку.
         if str(nickname) != 'AnonymousUser':
             user = User.objects.get(username=nickname)
-            form.link_image = '/media/' + str(user.image)
+            if user.image:
+                form.link_image = '/media/' + str(user.image)
+            else:
+                form.link_image = '/media/users_image/avatar.jpg'
         else:
             form.link_image = '/media/users_image/avatar.jpg'
         # В данном поле необходимо указать фильм, к которому мы хотим привязаться.
@@ -128,6 +131,22 @@ def add_rating(request):
         else:
             return HttpResponse(status=400)
 
+
+'''
+def add_rating(request):
+    form = RatingForm(request.POST)
+    if form.is_valid():
+        print(get_client_ip(request))
+        print(int(request.POST.get('movie')))
+        print(int(request.POST.get('star')))
+        form.ip = get_client_ip(request)
+        form.movie = int(request.POST.get('movie'))
+        form.star = int(request.POST.get('star'))
+        form.save()
+        return HttpResponse(status=201)
+    else:
+        return HttpResponse(status=400)
+'''
 
 '''
 def add_rating(request):
