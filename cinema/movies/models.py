@@ -48,13 +48,25 @@ class Genre(models.Model):
         verbose_name_plural = 'Жанры'
 
 
+# Модель для годов фильмов.
+class Year(models.Model):
+    name = models.CharField('Год', max_length=4)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Год'
+        verbose_name_plural = 'Года'
+
+
 # Модель для фильмов.
 class Movie(models.Model):
     title = models.CharField('Название', max_length=100)
     tagline = models.CharField('Слоган', max_length=100, default='')
     description = models.TextField('Описание')
     poster = models.ImageField('Постер', upload_to='movies/')
-    year = models.PositiveSmallIntegerField('Дата выхода', default=2019)
+    year = models.ManyToManyField(Year, verbose_name='Дата выхода')
     country = models.CharField('Страна', max_length=30)
     directors = models.ManyToManyField(Actor, verbose_name='режиссёр', related_name='film_director')
     actors = models.ManyToManyField(Actor, verbose_name='актёры', related_name='film_actor')

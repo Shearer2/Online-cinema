@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib import admin
 from django.utils.safestring import mark_safe
-from movies.models import Category, Genre, Movie, MovieShots, Actor, Rating, RatingStar, Reviews, Contact
+from movies.models import Category, Genre, Movie, MovieShots, Actor, Rating, RatingStar, Reviews, Contact, Year
 from modeltranslation.admin import TranslationAdmin
 
 
@@ -111,6 +111,14 @@ class GenreAdmin(TranslationAdmin):
     """Жанры фильмов."""
 
     list_display = ('name', 'url')
+
+
+@admin.register(Year)
+class YearAdmin(admin.ModelAdmin):
+    """Года фильмов."""
+
+    list_display = ('name',)
+    ordering = ('name',)
 
 
 @admin.register(MovieShots)

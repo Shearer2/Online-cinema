@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
-from movies.models import Movie, Category, Actor, Genre, Rating
+from movies.models import Movie, Category, Actor, Genre, Rating, Year
 from movies.forms import ReviewForm, RatingForm, ContactForm
 # Импортируем модуль для фильтрации по жанрам и годам.
 from django.core.paginator import Paginator
@@ -17,7 +17,8 @@ def movies_view(request, page_number=1):
     # Выводим определённое количество фильмов, которые не являются черновиками.
     last_movies = Movie.objects.filter(draft=False).order_by('id')[:5]
     genres = Genre.objects.all()
-    if request.GET.get('q'):
+    year = Year.objects.all()
+    if request.GET.get('q') or request.GET.get('genres') or request.GET.get('year'):
         per_page = len(movies)
     else:
         per_page = 1
@@ -28,6 +29,7 @@ def movies_view(request, page_number=1):
         'category_list': category,
         'last_movies': last_movies,
         'genres': genres,
+        'year': year,
         'movies': Movie.objects.filter(draft=False).values('year'),
         'form': contact(request)
     }
@@ -41,12 +43,14 @@ def movie_detail(request, slug):
     category = Category.objects.all()
     last_movies = Movie.objects.filter(draft=False).order_by('id')[:5]
     genres = Genre.objects.all()
+    year = Year.objects.all()
     movies = Movie.objects.filter(draft=False)
     context = {
         'movie': movie,
         'category_list': category,
         'last_movies': last_movies,
         'genres': genres,
+        'year': year,
         'movies': movies.values('year'),
         'star_form': RatingForm(),
         'form': contact(request)
@@ -88,12 +92,14 @@ def add_review(request, pk):
 def actor_views(request, slug):
     slug_field = Actor.objects.get(name=slug)
     genres = Genre.objects.all()
+    year = Year.objects.all()
     movies = Movie.objects.filter(draft=False)
     # Выводим определённое количество фильмов, которые не являются черновиками.
     last_movies = Movie.objects.filter(draft=False).order_by('id')[:5]
     context = {
         'actor': slug_field,
         'genres': genres,
+        'year': year,
         'movies': movies.values('year'),
         'form': contact(request),
         'last_movies': last_movies
