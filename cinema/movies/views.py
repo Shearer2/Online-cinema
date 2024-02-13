@@ -172,16 +172,16 @@ def filter_movies(request):
     # Устанавливаем работу фильтра если был выбран только год.
     if request.GET.get('year') and not request.GET.get('genres'):
         # Делаем вывод фильмов данного года, которые не являются черновиками.
-        movies = Movie.objects.filter(draft=False).filter(year__in=request.GET.getlist('year')).order_by('id')
+        movies = Movie.objects.filter(draft=False).filter(year__name__in=request.GET.getlist('year')).order_by('id')
     # Устанавливаем работу фильтра если был выбран только жанр.
     elif request.GET.get('genres') and not request.GET.get('year'):
         # Делаем вывод фильмов данного жанра, которые не являются черновиками.
-        movies = Movie.objects.filter(draft=False).filter(genres__in=request.GET.getlist('genres')).order_by('id')
+        movies = Movie.objects.filter(draft=False).filter(genres__url__in=request.GET.getlist('genres')).order_by('id')
     # Устанавливаем работу фильтра при выборе года и жанра.
     elif request.GET.get('year') and request.GET.get('genres'):
         # Делаем вывод фильмов по данному жанру и году.
         movies = Movie.objects.filter(draft=False).filter(
-            year__in=request.GET.getlist('year'), genres__in=request.GET.getlist('genres')
+            year__name__in=request.GET.getlist('year'), genres__url__in=request.GET.getlist('genres')
         ).order_by('id')
     elif request.GET.get('q'):
         # Фильтруем фильмы по названию без учёта регистра и сравниваем с тем, что пришло в get запросе q.

@@ -151,7 +151,7 @@
                                 {% for genre in genres %}
                                 <li class="editContent">
                                     <!--Добавляем name, чтобы можно было забирать все выбранные жанры в контроллере.-->
-                                    <input type="checkbox" class="checked" name="genres" value="{{ genre.id }}">
+                                    <input type="checkbox" class="checked" name="genres" value="{{ genre.url }}">
                                     <span class="span editContent">{{ genre }}</span>
                                 </li>
                                 {% endfor %}
@@ -166,7 +166,7 @@
                             <ul class="w3layouts-box-list">
                                 {% for movie_year in year %}
                                 <li class="editContent">
-                                    <input type="checkbox" class="checked" name="year" value="{{ movie_year.id }}">
+                                    <input type="checkbox" class="checked" name="year" value="{{ movie_year.name }}">
                                     <span class="span editContent">{{ movie_year }}</span>
                                 </li>
                                 {% endfor %}
