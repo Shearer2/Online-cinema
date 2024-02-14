@@ -11,12 +11,17 @@ from django.contrib.auth import get_user
 # Create your views here.
 # Контроллер для показа главной страницы.
 def movies_view(request, page_number=1):
+    #movies = Movie.objects.filter(draft=False).filter(genres__url__in=request.GET.getlist('genres')).order_by('id')
     movies = filter_movies(request)
+    print(movies)
     # Делаем вывод всех категорий.
     category = Category.objects.all()
     # Выводим определённое количество фильмов, которые не являются черновиками.
     last_movies = Movie.objects.filter(draft=False).order_by('id')[:5]
     genres = Genre.objects.all()
+    #for genre in genres:
+        #lst =
+
     year = Year.objects.all()
     if request.GET.get('q') or request.GET.get('genres') or request.GET.get('year'):
         per_page = len(movies)
