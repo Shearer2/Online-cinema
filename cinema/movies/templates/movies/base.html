@@ -165,10 +165,10 @@
                             </h3>
                             <ul class="w3layouts-box-list">
                                 {% for movie_year in year %}
-                                <li class="editContent">
-                                    <input type="checkbox" class="checked" name="year" value="{{ movie_year.name }}">
-                                    <span class="span editContent">{{ movie_year }}</span>
-                                </li>
+                                    <li class="editContent">
+                                        <input type="checkbox" class="checked" name="year" value="{{ movie_year }}">
+                                        <span class="span editContent">{{ movie_year }}</span>
+                                    </li>
                                 {% endfor %}
                             </ul>
                         </div>
