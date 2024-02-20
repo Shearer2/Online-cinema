@@ -601,6 +601,10 @@ ul.tic-info li {
 
 /*-- //features --*/
 /*-- /New-Arrivals --*/
+.information {
+    padding: 20% 30%;
+}
+
 .product-shoe-info {
     padding: 0 0 15px 0;
     border: 1px solid #e4e4e4;

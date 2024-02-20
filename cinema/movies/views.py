@@ -6,6 +6,7 @@ from django.core.paginator import Paginator
 from users.models import User
 # Подключаем модель для проверки какой пользователь авторизован.
 from django.contrib.auth import get_user
+from django.urls import reverse
 
 
 # Create your views here.
@@ -16,23 +17,31 @@ def movies_view(request, page_number=1):
     category = Category.objects.all()
     # Выводим определённое количество фильмов, которые не являются черновиками.
     last_movies = Movie.objects.filter(draft=False).order_by('id')[:5]
-    genres = Genre.objects.all()
     year, genres = genre_year()
     if request.GET.get('q') or request.GET.get('genres') or request.GET.get('year'):
         per_page = len(movies)
     else:
         per_page = 1
-    paginator = Paginator(movies, per_page)
-    movies_paginator = paginator.page(page_number)
-    context = {
-        'movie_list': movies_paginator,
-        'category_list': category,
-        'last_movies': last_movies,
-        'genres': genres,
-        'year': year,
-        'movies': Movie.objects.filter(draft=False).values('year'),
-        'form': contact(request)
-    }
+    if len(movies) == 0:
+        context = {
+            'category_list': category,
+            'last_movies': last_movies,
+            'genres': genres,
+            'year': year,
+            'form': contact(request)
+        }
+    else:
+        paginator = Paginator(movies, per_page)
+        movies_paginator = paginator.page(page_number)
+        context = {
+            'movie_list': movies_paginator,
+            'category_list': category,
+            'last_movies': last_movies,
+            'genres': genres,
+            'year': year,
+            'movies': Movie.objects.filter(draft=False).values('year'),
+            'form': contact(request)
+        }
     return render(request, 'movies/movies_list.html', context)
 
 
@@ -147,36 +156,6 @@ def add_rating(request):
             return HttpResponse(status=201)
         else:
             return HttpResponse(status=400)
-
-
-'''
-def add_rating(request):
-    form = RatingForm(request.POST)
-    if form.is_valid():
-        print(get_client_ip(request))
-        print(int(request.POST.get('movie')))
-        print(int(request.POST.get('star')))
-        form.ip = get_client_ip(request)
-        form.movie = int(request.POST.get('movie'))
-        form.star = int(request.POST.get('star'))
-        form.save()
-        return HttpResponse(status=201)
-    else:
-        return HttpResponse(status=400)
-'''
-
-'''
-def add_rating(request):
-    if request.method == 'POST':
-        form = RatingForm(data=request.POST)
-        if form.is_valid():
-            rating_star = request.POST['star']
-            form[rating_star].save()
-    else:
-        form = RatingForm()
-    context = {'form': form}
-    return render(request, 'movies/movie_detail.html', context)
-'''
 
 
 def filter_movies(request):
