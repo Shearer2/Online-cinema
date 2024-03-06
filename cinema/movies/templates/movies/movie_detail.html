@@ -21,12 +21,12 @@
             <ul>
                 <!--Чтобы сделать перевод и статической информации необходимо указывать тег trans и текст,
                 который необходимо перевести.-->
-                <li style="list-style: none"><span><b>{% trans 'Год' %}:</b> {{ movie.year }}</span></li>
-                <li style="list-style: none"><span><b>{% trans 'Страна' %}:</b> {{ movie.country }}</span>
+                <li><span><b>{% trans 'Год' %}:</b> {{ movie.year }}</span></li>
+                <li><span><b>{% trans 'Страна' %}:</b> {{ movie.country }}</span>
                 </li>
-                <li style="list-style: none"><span><b>{% trans 'Слоган' %}:</b> {{ movie.tagline }}</span>
+                <li><span><b>{% trans 'Слоган' %}:</b> {{ movie.tagline }}</span>
                 </li>
-                <li style="list-style: none">
+                <li>
                     <span><b>{% trans 'Режиссер' %}:</b>
                         <!--Так как режиссёры, актёры и жанры это связка многие ко многим, то их
                         необходимо обрабатывать циклом.-->
@@ -37,7 +37,7 @@
                         {% endfor %}
                     </span>
                 </li>
-                <li style="list-style: none">
+                <li>
                     <span><b>{% trans 'Актеры' %}:</b>
                         {% for actor in movie.actors.all %}
                         <a href="{% url 'movies:actor_views' actor.name %}">

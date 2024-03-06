@@ -6,7 +6,6 @@ from django.core.paginator import Paginator
 from users.models import User
 # Подключаем модель для проверки какой пользователь авторизован.
 from django.contrib.auth import get_user
-from django.urls import reverse
 
 
 # Create your views here.
@@ -21,7 +20,7 @@ def movies_view(request, page_number=1):
     if request.GET.get('q') or request.GET.get('genres') or request.GET.get('year'):
         per_page = len(movies)
     else:
-        per_page = 1
+        per_page = 10
     if len(movies) == 0:
         context = {
             'category_list': category,

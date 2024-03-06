@@ -478,8 +478,13 @@ mark,
 }
 
 .img-fluid {
-  max-width: 100%;
-  height: auto;
+  max-width: 290px;
+  max-height: 400px;
+}
+
+.img-fluid-finish {
+    max-width: 100%;
+    height: auto;
 }
 
 .img-movie-shots {
@@ -1117,7 +1122,7 @@ pre code {
     -webkit-box-flex: 0;
     -ms-flex: 0 0 33.333333%;
     flex: 0 0 33.333333%;
-    max-width: 33.333333%;
+    max-width: 330px;
   }
   .col-md-5 {
     -webkit-box-flex: 0;
@@ -1129,7 +1134,7 @@ pre code {
     -webkit-box-flex: 0;
     -ms-flex: 0 0 50%;
     flex: 0 0 50%;
-    max-width: 50%;
+    max-width: 40%;
   }
   .col-md-7 {
     -webkit-box-flex: 0;
@@ -8441,6 +8446,7 @@ button.bg-dark:focus {
   }
   .pl-lg-4,
   .px-lg-4 {
+    max-width: 50%;
     padding-left: 1.5rem !important;
   }
   .p-lg-5 {

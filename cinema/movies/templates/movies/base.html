@@ -243,7 +243,7 @@
                         {% for movie in last_movies %}
                         <div class="special-sec1 row mt-3 editContent">
                             <div class="img-deals col-md-4">
-                                <img src="{{ movie.poster.url }}" class="img-fluid" alt="{{ movie.url }}">
+                                <img src="{{ movie.poster.url }}" class="img-fluid-finish" alt="{{ movie.url }}">
                             </div>
                             <div class="img-deal1 col-md-4">
                                 <a href="{% url 'movies:movie_detail' movie.url %}" class="editContent">

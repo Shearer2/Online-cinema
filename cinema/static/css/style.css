@@ -608,6 +608,8 @@ ul.tic-info li {
 .product-shoe-info {
     padding: 0 0 15px 0;
     border: 1px solid #e4e4e4;
+    height: 555px;
+    max-width: 290px;
 }
 
 .item-info-product h4 a {
@@ -903,7 +905,7 @@ ul.w3layouts-box-list li {
 }
 
 .desc1-left {
-    border: 1px solid #ddd;
+    border: 0px solid #ddd;
 }
 
 .desc1-right h3 {
