@@ -2,9 +2,9 @@ from django.db import models
 from datetime import date
 
 
-# Create your models here.
-# Модель для распределения фильмов по категориям.
 class Category(models.Model):
+    """Модель для распределения фильмов по категориям."""
+
     name = models.CharField('Категория', max_length=150)
     description = models.TextField('Описание')
     url = models.SlugField(max_length=160, unique=True)
@@ -17,8 +17,9 @@ class Category(models.Model):
         verbose_name_plural = 'Категории'
 
 
-# Модель для информации об актёрах и режиссёрах.
 class Actor(models.Model):
+    """# Модель для информации об актёрах и режиссёрах."""
+
     name = models.CharField('Имя', max_length=100)
     age = models.PositiveSmallIntegerField('Возраст', default=0)
     description = models.TextField('Описание')
@@ -34,8 +35,9 @@ class Actor(models.Model):
         verbose_name_plural = 'Актёры и режиссёры'
 
 
-# Модель для жанров фильмов.
 class Genre(models.Model):
+    """Модель для жанров фильмов."""
+
     name = models.CharField('Жанр', max_length=100)
     description = models.TextField('Описание')
     url = models.SlugField(max_length=160, unique=True)
@@ -48,8 +50,9 @@ class Genre(models.Model):
         verbose_name_plural = 'Жанры'
 
 
-# Модель для годов фильмов.
 class Year(models.Model):
+    """Модель для годов фильмов."""
+
     name = models.CharField('Год', max_length=4)
 
     def __str__(self):
@@ -60,8 +63,9 @@ class Year(models.Model):
         verbose_name_plural = 'Года'
 
 
-# Модель для фильмов.
 class Movie(models.Model):
+    """Модель для фильмов."""
+
     title = models.CharField('Название', max_length=100)
     tagline = models.CharField('Слоган', max_length=100, default='')
     description = models.TextField('Описание')
@@ -84,8 +88,9 @@ class Movie(models.Model):
     def __str__(self):
         return self.title
 
-    # Данный метод возвращает список отзывов, прикреплённых к фильму, с фильтрацией по полю parent со значением Null.
     def get_review(self):
+        """Возвращение списка отзывов, прикреплённых к фильму, с фильтрацией по полю parent со значением Null."""
+
         return self.reviews_set.filter(parent__isnull=True)
 
     class Meta:
@@ -93,8 +98,9 @@ class Movie(models.Model):
         verbose_name_plural = 'Фильмы'
 
 
-# Модель для кадров из фильмов.
 class MovieShots(models.Model):
+    """Модель для кадров из фильмов."""
+
     title = models.CharField('Заголовок', max_length=100)
     description = models.TextField('Описание')
     image = models.ImageField('Изображение', upload_to='movie_shots/')
@@ -108,8 +114,9 @@ class MovieShots(models.Model):
         verbose_name_plural = 'Кадры из фильма'
 
 
-# Модель рейтинга.
 class RatingStar(models.Model):
+    """Модель рейтинга фильмов."""
+
     value = models.SmallIntegerField('Значение', default=0)
 
     def __str__(self):
@@ -123,6 +130,8 @@ class RatingStar(models.Model):
 
 
 class Rating(models.Model):
+    """Модель с нумерацией рейтинга."""
+
     ip = models.CharField('IP адрес', max_length=15)
     star = models.ForeignKey(RatingStar, on_delete=models.CASCADE, verbose_name='звезда')
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, verbose_name='фильм')
@@ -135,8 +144,9 @@ class Rating(models.Model):
         verbose_name_plural = 'Рейтинги'
 
 
-# Модель отзывов к фильму.
 class Reviews(models.Model):
+    """Модель отзывов к фильму."""
+
     # EmailField это CharField, который проверяет, что значение является действительно адресом электронной почты.
     email = models.EmailField()
     name = models.CharField('Имя', max_length=100)
@@ -157,7 +167,8 @@ class Reviews(models.Model):
 
 
 class Contact(models.Model):
-    """Подписка по email"""
+    """Подписка по email."""
+
     email = models.EmailField()
     date = models.DateTimeField(auto_now_add=True)
 

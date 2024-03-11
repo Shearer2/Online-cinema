@@ -8,9 +8,9 @@ from django.contrib.auth.decorators import login_required
 from users.forms import UserLoginForm, UserRegistrationForm, UserProfileForm
 
 
-# Create your views here.
-# Контроллер для авторизации.
 def login(request):
+    """Контроллер для авторизации пользователя."""
+
     # Чтобы проверить какой запрос пришёл необходимо сделать условие, так как данная страница будет работать на два
     # запроса, предоставление информации пользователю GET и получение информации о пользователе POST.
     if request.method == 'POST':
@@ -36,8 +36,9 @@ def login(request):
     return render(request, 'users/login.html', context)
 
 
-# Контроллер для регистрации.
 def registration(request):
+    """Контроллер для регистрации пользователя."""
+
     if request.method == 'POST':
         form = UserRegistrationForm(data=request.POST)
         if form.is_valid():
@@ -52,15 +53,17 @@ def registration(request):
     return render(request, 'users/registration.html', context)
 
 
-# Контроллер для выхода из системы.
 def logout(request):
+    """Контроллер для выхода из системы авторизованного пользователя."""
+
     auth.logout(request)
     return HttpResponseRedirect(reverse('movies:movie'))
 
 
-# Контроллер доступа для профиля.
 @login_required
 def profile(request):
+    """Контроллер для отображения и редактирования профиля пользователя."""
+
     if request.method == 'POST':
         # Чтобы можно было изменять данные и сохранять их, необходимо указать не просто data, но и instance.
         # При помощи переменной files передаётся изменённое изображение.

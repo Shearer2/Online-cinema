@@ -8,19 +8,19 @@ from users.models import User
 from django.contrib.auth import get_user
 
 
-# Create your views here.
-# Контроллер для показа главной страницы.
 def movies_view(request, page_number=1):
+    """Контроллер для показа главной страницы."""
+
     movies = filter_movies(request)
     # Делаем вывод всех категорий.
     category = Category.objects.all()
     # Выводим определённое количество фильмов, которые не являются черновиками.
-    last_movies = Movie.objects.filter(draft=False).order_by('id')[:5]
+    last_movies = Movie.objects.filter(draft=False).order_by('-world_premiere')[:3]
     year, genres = genre_year()
     if request.GET.get('q') or request.GET.get('genres') or request.GET.get('year'):
         per_page = len(movies)
     else:
-        per_page = 10
+        per_page = 8
     if len(movies) == 0:
         context = {
             'category_list': category,
@@ -45,6 +45,8 @@ def movies_view(request, page_number=1):
 
 
 def genre_year():
+    """Контроллер для отображения на странице только тех годов и жанров, по которым есть фильмы."""
+
     year, genres = [], []
     # Получаю все года и проверяю есть ли фильмы к этим годам, если есть, то добавляю их в список.
     for movie_year in Year.objects.all():
@@ -57,12 +59,13 @@ def genre_year():
     return year, genres
 
 
-# Контроллер для вывода описания к фильму.
 def movie_detail(request, slug):
+    """Контроллер для вывода описания к фильму."""
+
     # Получаем номер фильма и по нему из базы данных берём информацию.
     movie = Movie.objects.get(url=slug)
     category = Category.objects.all()
-    last_movies = Movie.objects.filter(draft=False).order_by('id')[:5]
+    last_movies = Movie.objects.filter(draft=False).order_by('-world_premiere')[:3]
     year, genres = genre_year()
     movies = Movie.objects.filter(draft=False)
     context = {
@@ -78,8 +81,9 @@ def movie_detail(request, slug):
     return render(request, 'movies/movie_detail.html', context)
 
 
-# Контроллер для отправки отзывов.
 def add_review(request, pk):
+    """Контроллер для отправки отзывов."""
+
     form = ReviewForm(request.POST)
     movie = Movie.objects.get(id=pk)
     # Если пользователь авторизован, то забираю его имя пользователя.
@@ -108,13 +112,14 @@ def add_review(request, pk):
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
-# Контроллер для вывода информации об актёрах и режиссёрах.
 def actor_views(request, slug):
+    """Контроллер для вывода информации об актёрах и режиссёрах."""
+
     slug_field = Actor.objects.get(name=slug)
     year, genres = genre_year()
     movies = Movie.objects.filter(draft=False)
     # Выводим определённое количество фильмов, которые не являются черновиками.
-    last_movies = Movie.objects.filter(draft=False).order_by('id')[:5]
+    last_movies = Movie.objects.filter(draft=False).order_by('-world_premiere')[:3]
     context = {
         'actor': slug_field,
         'genres': genres,
@@ -126,8 +131,9 @@ def actor_views(request, slug):
     return render(request, 'movies/actor.html', context)
 
 
-# Контроллер для получения ip-адреса пользователя, который отправил запрос.
 def get_client_ip(request):
+    """Контроллер для получения ip-адреса пользователя, который отправил запрос."""
+
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     if x_forwarded_for:
         ip = x_forwarded_for.split(',')[0]
@@ -136,8 +142,9 @@ def get_client_ip(request):
     return ip
 
 
-# Добавляем возможность устанавливать рейтинг фильма.
 def add_rating(request):
+    """Контроллер для добавления рейтинга к фильму."""
+
     if request.GET.get('rating'):
         # Генерируем форму передавая ей post запрос.
         form = RatingForm(request.POST)
@@ -158,6 +165,8 @@ def add_rating(request):
 
 
 def filter_movies(request):
+    """Контроллер для фильтрации фильмов."""
+
     # Устанавливаем работу фильтра если был выбран только год.
     if request.GET.get('year') and not request.GET.get('genres'):
         # Делаем вывод фильмов данного года, которые не являются черновиками.
@@ -182,6 +191,8 @@ def filter_movies(request):
 
 
 def contact(request):
+    """Контроллер для сохранения контактной информации пользователя."""
+
     if request.method == 'POST':
         form = ContactForm(data=request.POST)
         if form.is_valid():

@@ -5,7 +5,6 @@ from movies.models import Category, Genre, Movie, MovieShots, Actor, Rating, Rat
 from modeltranslation.admin import TranslationAdmin
 
 
-# Register your models here.
 class MovieAdminForm(forms.ModelForm):
     description_ru = forms.CharField(label='Описание')
     description_en = forms.CharField(label='Описание')
@@ -64,11 +63,13 @@ class MovieAdmin(TranslationAdmin):
     actions = ('publish', 'unpublish')
 
     def get_poster(self, obj):
+        """Вывод изображений в админ-панели."""
+
         return mark_safe(f'<img src={obj.poster.url} width="60" height="50">')
 
     # Добавление actions, чтобы можно было выбранные записи убрать из черновика.
     def publish(self, request, queryset):
-        """Опубликовать."""
+        """Публикация записей."""
         # Здесь хранятся выбранные записи.
         row_update = queryset.update(draft=False)
         # Вывод уведомления вверху экрана об изменении записи в зависимости от выбранного количества.
@@ -129,6 +130,8 @@ class MovieShotsAdmin(TranslationAdmin):
     readonly_fields = ('get_image',)
 
     def get_image(self, obj):
+        """Вывод изображений в админ-панели."""
+
         return mark_safe(f'<img src={obj.image.url} width="60" height="50">')
 
     get_image.short_description = "Изображение"
@@ -145,6 +148,8 @@ class ActorAdmin(TranslationAdmin):
 
     # Добавляем метод для вывода изображений, а не просто ссылок, в админ-панели.
     def get_image(self, obj):
+        """Вывод изображений в админ-панели."""
+
         # Метод mark_safe выводит html не как строку, а как тег.
         return mark_safe(f'<img src={obj.image.url} width="50" height="60">')
 
@@ -168,4 +173,6 @@ class RatingStarAdmin(admin.ModelAdmin):
 
 @admin.register(Contact)
 class ContactAdmin(admin.ModelAdmin):
+    """Контактная информация пользователя."""
+
     list_display = ('email', 'date')

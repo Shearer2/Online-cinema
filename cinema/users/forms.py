@@ -4,6 +4,8 @@ from users.models import User
 
 
 class UserLoginForm(AuthenticationForm):
+    """Форма для авторизации пользователя."""
+
     # Указываем, что поле с именем пользователя является строкой, добавляем инпут и указываем необходимые атрибуты.
     # Класс и плейсхолдер берутся из шаблона, указываются их значения.
     username = forms.CharField(widget=forms.TextInput(attrs={
@@ -20,6 +22,8 @@ class UserLoginForm(AuthenticationForm):
 
 
 class UserRegistrationForm(UserCreationForm):
+    """Форма для регистрации пользователя."""
+
     first_name = forms.CharField(widget=forms.TextInput(attrs={
         'class': 'form-control py-4', 'placeholder': 'Введите имя'
     }))
@@ -45,6 +49,8 @@ class UserRegistrationForm(UserCreationForm):
 
 
 class UserProfileForm(UserChangeForm):
+    """Форма для отображения профиля пользователя."""
+
     first_name = forms.CharField(widget=forms.TextInput(attrs={
         'class': 'form-control py-4'
     }))
