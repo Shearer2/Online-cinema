@@ -70,6 +70,7 @@ class MovieAdmin(TranslationAdmin):
     # Добавление actions, чтобы можно было выбранные записи убрать из черновика.
     def publish(self, request, queryset):
         """Публикация записей."""
+
         # Здесь хранятся выбранные записи.
         row_update = queryset.update(draft=False)
         # Вывод уведомления вверху экрана об изменении записи в зависимости от выбранного количества.
@@ -82,6 +83,7 @@ class MovieAdmin(TranslationAdmin):
     # Добавление actions, чтобы можно было выбранные записи добавить в черновик.
     def unpublish(self, request, queryset):
         """Снять с публикации."""
+
         # Здесь хранятся выбранные записи.
         row_update = queryset.update(draft=True)
         if row_update == 1:
